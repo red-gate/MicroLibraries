@@ -1,0 +1,1 @@
+Provides a `ShellEscape` extension method to `System.String` that escapes the string for use on the command-line. Escaping is performed according to the rules described at http://msdn.microsoft.com/en-us/library/a1y7w461.aspx. This involves surrounding the string in double-quotes if necessary, along with further escaping of any double-quotes and backslashes within the string.

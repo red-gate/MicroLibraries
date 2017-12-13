@@ -1,0 +1,22 @@
+# Ignore build output
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Dd]ist/
+
+# Ignore Visual Studio cache/options folder.
+.vs/
+
+# Ignore ReSharper stuff.
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Ignore user-specific files.
+*.user
+
+# Restored NuGet packages should be ignored.
+**/packages/*
+
+# Ignore executables.
+*.exe
