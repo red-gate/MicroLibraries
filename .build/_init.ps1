@@ -12,7 +12,8 @@ function global:Build
 {
     [CmdletBinding()]
     param(
-        [string[]] $Task = @('Default')
+        [string[]] $Task = @('Default'),
+		[string] $Configuration = 'Release'
     )
 
     Push-Location $PsScriptRoot -Verbose
@@ -42,7 +43,7 @@ function global:Build
         Import-Module '.\packages\RedGate.Build\tools\RedGate.Build.psm1' -Force
 
         # Call the actual build script.
-        & '.\packages\Invoke-Build\tools\Invoke-Build.ps1' -File .\build.ps1 -Task $Task
+        & '.\packages\Invoke-Build\tools\Invoke-Build.ps1' -File .\build.ps1 -Task $Task -Configuration $Configuration
     }
     finally
     {

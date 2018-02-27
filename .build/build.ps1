@@ -4,7 +4,7 @@
 [CmdletBinding()]
 param([string]$Configuration = 'Release')
 
-use 14.0 MSBuild
+use 15.0 MSBuild
 
 # Useful paths used by multiple tasks.
 $RepositoryRoot = "$PsScriptRoot\.." | Resolve-Path
@@ -80,22 +80,16 @@ task Compile  RestorePackages, {
 task Test  Compile, {
     Write-Info 'Running tests'
 
-    # Loop through each project.
-    Get-ChildItem $SourceDir -Directory -Filter 'ULibs.*' | ForEach-Object {
-        $ProjectDir = $_.FullName
-        $ProjectName = $_.Name
-        Write-Host "Project folder found: $ProjectDir"
-        
-        $TestAssemblyPath = "$ProjectDir\bin\Release\$ProjectName.dll" | Resolve-Path
-        Invoke-NUnit3ForAssembly -AssemblyPath $TestAssemblyPath -NUnitVersion '3.6.1' `
-                                 -FrameworkVersion 'net-3.5' `
-                                 -EnableCodeCoverage $True `
-                                 -DotCoverFilters '+:ULibs.*;-:*.Tests' `
-                                 -DotCoverAttributeFilters '*.ExcludeFromCodeCoverageAttribute'
+    $TestAssemblyPath = "$SourceDir\Ulibs.Tests\bin\$Configuration\ULibs.Tests.dll" | Resolve-Path
+    Invoke-NUnit3ForAssembly -AssemblyPath $TestAssemblyPath `
+                             -NUnitVersion '3.8.0' `
+                             -FrameworkVersion 'net-4.0' `
+                             -EnableCodeCoverage $True `
+                             -DotCoverFilters '+:ULibs.*;-:*.Tests' `
+                             -DotCoverAttributeFilters '*.ExcludeFromCodeCoverageAttribute'
                                  
-        $CoverageResultsPath = "$TestAssemblyPath.TestResult.coverage.snap" | Resolve-Path
-        TeamCity-ImportDotNetCoverageResult 'dotcover' $CoverageResultsPath        
-    }
+    $CoverageResultsPath = "$TestAssemblyPath.TestResult.coverage.snap" | Resolve-Path
+    TeamCity-ImportDotNetCoverageResult 'dotcover' $CoverageResultsPath        
 }
 
 
@@ -104,25 +98,24 @@ task Package {
     Write-Info 'Generating NuGet packages'
 
     # Loop through each project.
-    Get-ChildItem $SourceDir -Directory -Filter 'ULibs.*' | ForEach-Object {
-        $ProjectDir = $_.FullName
-        $ProjectName = $_.Name
-        Write-Host "Project folder found: $ProjectDir"
+    Get-ChildItem $SourceDir -File -Filter '*.nuspec' -Recurse | ForEach-Object {
+        $NuSpecPath = $_.FullName
+        Write-Host "NuSpec file found: $NuSpecPath"
+
+        $ProjectDir = Split-Path -Parent $NuSpecPath
+        $ProjectName = $_.BaseName
 
         $PackageId = "RedGate.$ProjectName.Sources"
-        $NuSpecPath = "$ProjectDir\$ProjectName.nuspec" | Resolve-Path
         $ReleaseNotesPath = "$ProjectDir\RELEASENOTES.md" | Resolve-Path
         $ReadmePath = "$ProjectDir\README.md" | Resolve-Path
-        $AssemblyInfoPath = "$ProjectDir\Properties\AssemblyInfo.cs" | Resolve-Path
 
         # Establish release notes and package version number from the RELEASENOTES.md file.
         $Notes = Read-ReleaseNotes $ReleaseNotesPath -ThreePartVersion
         $ReleaseNotes = $Notes.Content
         $Version = $Notes.Version
-        Write-Host "Version from release notes: $Version"
 
         # Establish the summary and description from the README.md file.
-        $Description = [System.IO.File]::ReadAllText($ReadmePath, [System.Text.Encoding]::UTF8).Trim()
+        $Description = [IO.File]::ReadAllText($ReadmePath, [Text.Encoding]::UTF8).Trim()
         $Regex = [regex] '\.\s'
         $Summary = if ($Description -match $Regex) { ($Description -split $Regex)[0] + '.' } else { $Description }
 
@@ -130,11 +123,11 @@ task Package {
         $BranchName = Get-BranchName
         $IsDefaultBranch = $BranchName -eq 'master'
         $NuGetPackageVersion = New-SemanticNuGetPackageVersion -Version $Version -BranchName $BranchName -IsDefaultBranch $IsDefaultBranch
-        Write-Host "NuGet package version = $NuGetPackageVersion"
 
         # Establish the file header.
-        $AssemblyInfo = [System.IO.File]::ReadAllText($AssemblyInfoPath, [System.Text.Encoding]::UTF8)
-        $CopyrightYear = ([regex] '(?<=AssemblyCopyright\("Copyright .*?)[0-9]{4}').Match($AssemblyInfo).Value
+        $ProjectFilePath = "$ProjectDir\$ProjectName.csproj" | Resolve-Path
+        $ProjectXml = [xml] (Get-Content $ProjectFilePath)
+        $CopyrightYear = $ProjectXml.SelectSingleNode('//Copyright').InnerText
         $CurrentYear = Get-Date -Format yyyy
         if ($CurrentYear -ne $CopyrightYear) {
             $CopyrightYear = "$CopyrightYear-$CurrentYear"
@@ -165,8 +158,8 @@ any other copyright attribution.
         # Locate source files to be included in the package, and generate their corresponding .pp files.
         Get-ChildItem $ProjectDir -Filter *.cs | ForEach-Object {
             $InputPath = $_.FullName
-            $Encoding = [System.Text.UTF8Encoding]::new($False, $True)
-            $OriginalContents = [System.IO.File]::ReadAllText($InputPath, $Encoding)
+            $Encoding = [Text.UTF8Encoding]::new($False, $True)
+            $OriginalContents = [IO.File]::ReadAllText($InputPath, $Encoding)
             $ModifiedContents = $OriginalContents.Replace('/***', '').Replace('***/', '')
             if ($OriginalContents -ne $ModifiedContents) {
                 Write-Host "  Including file $InputPath"
@@ -175,7 +168,7 @@ any other copyright attribution.
                 
                 $OutputPath = "$InputPath.pp"
                 Write-Host "    Rewriting to $OutputPath"
-                [System.IO.File]::WriteAllText($OutputPath, $ModifiedContents, $Encoding)
+                [IO.File]::WriteAllText($OutputPath, $ModifiedContents, $Encoding)
             }
         }
 
