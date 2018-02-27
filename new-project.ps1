@@ -84,7 +84,7 @@
       Write-Host "    Creating file $OutputFilePath"
 
       # Read the contents of the source file.
-      $Contents = [System.IO.File]::ReadAllText($SourceFilePath, [System.Text.Encoding]::UTF8)
+      $Contents = [IO.File]::ReadAllText($SourceFilePath, [Text.Encoding]::UTF8)
     
       # Replace the source project name with the new project name wherever it occurs in the file.
       if ($NameRegex.IsMatch($Contents)) {
@@ -92,22 +92,16 @@
         $Contents = $NameRegex.Replace($Contents, $NewProjectName)
       }
       
-      # Special treatment for the project file, to assign the new project GUID.
-      if ([System.IO.Path]::GetExtension($OutputFileRelativePath) -eq '.csproj') {
-        Write-Host '    Substituting new project guid in project file contents'
-        $ProjectGuidRegex = [regex] '(?<=\<ProjectGuid\>).+?(?=\</ProjectGuid\>)'
-        $Contents = $ProjectGuidRegex.Replace($Contents, $NewProjectGuid)
+      # Special treatment for the project file, to update the copyright year.
+      if ([IO.Path]::GetExtension($OutputFileRelativePath) -eq '.csproj') {
+        Write-Host '    Updating copyright year in project file contents'
+        $CopyrightYearRegex = [regex] '(?<=\<Copyright\>).+?(?=\</Copyright\>)'
+        $CurrentYear = Get-Date -Format yyyy
+        $Contents = $CopyrightYearRegex.Replace($Contents, $CurrentYear)
       }
       
-      # Special treatment for the AssemblyInfo.cs file, to assign the copyright year.
-      if ([System.IO.Path]::GetFileName($OutputFileRelativePath) -eq 'AssemblyInfo.cs') {
-        Write-Host '    Substituting current year in assembly copyright attribute'
-        $CopyrightRegex = [regex] '(?<=AssemblyCopyright\("Copyright .*?)[0-9]{4}'
-        $Contents = $CopyrightRegex.Replace($Contents, (Get-Date -Format yyy))
-      }
-    
       # Write the contents to the output file.
-      [System.IO.File]::WriteAllText($OutputFilePath, $Contents, [System.Text.Encoding]::UTF8)
+      [IO.File]::WriteAllText($OutputFilePath, $Contents, [Text.Encoding]::UTF8)
     }
   }
   
@@ -115,7 +109,7 @@
   $SolutionFilePath = "$PSScriptRoot\Source\Redgate.MicroLibraries.sln" | Resolve-Path
   Write-Info "Adding new project to solution file $SolutionFilePath"
   
-  $Lines = [Collections.Generic.List[String]] [System.IO.File]::ReadAllLines($SolutionFilePath, [System.Text.Encoding]::UTF8)
+  $Lines = [Collections.Generic.List[String]] [IO.File]::ReadAllLines($SolutionFilePath, [Text.Encoding]::UTF8)
   
   $Index = $Lines.IndexOf('Global')
   $NewLines = [Collections.Generic.List[String]] @(
@@ -134,5 +128,5 @@
   )
   $Lines.InsertRange($Index, $NewLines)
   
-  [System.IO.File]::WriteAllLines($SolutionFilePath, $Lines, [System.Text.Encoding]::UTF8)
+  [IO.File]::WriteAllLines($SolutionFilePath, $Lines, [Text.Encoding]::UTF8)
 }
