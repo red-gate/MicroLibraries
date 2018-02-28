@@ -13,7 +13,9 @@ function global:Build
     [CmdletBinding()]
     param(
         [string[]] $Task = @('Default'),
-		[string] $Configuration = 'Release'
+		[string] $Configuration = 'Release',
+        [string]$NuGetFeedUrl,
+        [string]$NuGetFeedApiKey
     )
 
     Push-Location $PsScriptRoot -Verbose
@@ -43,7 +45,7 @@ function global:Build
         Import-Module '.\packages\RedGate.Build\tools\RedGate.Build.psm1' -Force
 
         # Call the actual build script.
-        & '.\packages\Invoke-Build\tools\Invoke-Build.ps1' -File .\build.ps1 -Task $Task -Configuration $Configuration
+        & '.\packages\Invoke-Build\tools\Invoke-Build.ps1' -File .\build.ps1 -Task $Task -Configuration $Configuration -NuGetFeedUrl $NuGetFeedUrl -NuGetFeedApiKey $NuGetFeedApiKey
     }
     finally
     {
@@ -67,7 +69,7 @@ function global:Publish
 }
 
 Write-Host 'The following commands are now available:' -ForegroundColor Magenta
-Write-Host "    Build [-Task <task-list>]" -ForegroundColor Green
+Write-Host "    Build [-Task <task-list>] [-Configuration <Debug|Release>] [-NuGetFeedUrl <url> -NuGetFeedApiKey <key>]" -ForegroundColor Green
 Write-Host "    Clean" -ForegroundColor Green
 Write-Host "    Rebuild" -ForegroundColor Green
 Write-Host "    Publish" -ForegroundColor Green

@@ -2,7 +2,11 @@
 # _init.ps1 which declares four global functions (build, clean, rebuild, package), then invoke one of those functions.
 
 [CmdletBinding()]
-param([string]$Configuration = 'Release')
+param(
+    [string]$Configuration = 'Release',
+    [string]$NuGetFeedUrl,
+    [string]$NuGetFeedApiKey
+)
 
 use 15.0 MSBuild
 
@@ -173,7 +177,7 @@ any other copyright attribution.
         }
 
         # Establish the output folder.
-        $OutputDir = if ($PackageId -eq 'RedGate.ULibs.UlibsProjectTemplate.Sources' -or (Test-NugetPackage -Name $PackageId -Version $Version)) {
+        $OutputDir = if ($PackageId -match 'ProjectTemplate' -or (Test-NugetPackage $PackageId $Version) -or (Test-NugetPackage $PackageId $NuGetPackageVersion)) {
             "$DistDir\Not publishable"
         } else {
             "$DistDir\Publishable"
@@ -197,16 +201,18 @@ any other copyright attribution.
         # Delete the temporary .pp files.
         Get-ChildItem $ProjectDir -Filter *.pp | Remove-Item
     }
-}
 
+    # Publish the publishable packages as TeamCity artefacts.
+    Get-ChildItem "$DistDir\Publishable" -File -Filter '*.nupkg' | ForEach-Object { TeamCity-PublishArtifact $_.FullName } 
+}
 
 
 # Publish task, publishes the NuGet package for each micro-library that is eligible for publication.
 task Publish {
     Write-Info 'Publishing eligible NuGet packages'
     
-    if (-not $env:NugetFeedUrl -or -not $env:NugetFeedApiKey) {
-        Write-Warning 'Skipping publication - missing NugetFeedUrl and NugetFeedApiKey environment variables'
+    if (-not $NuGetFeedUrl -or -not $NuGetFeedApiKey) {
+        Write-Warning 'Skipping publication - no NugetFeedUrl or NuGetFeedApiKey parameters specified'
     } else {
         if (-not (Test-Path $DistDir)) {
             throw "The $DistDir folder has not yet been created. Try running the Build or Package tasks first."
@@ -222,8 +228,8 @@ task Publish {
                     $Parameters = @(
                         'push',
                         $_.FullName,
-                        '-Source', $env:NugetFeedUrl,
-                        '-ApiKey', $env:NugetFeedApiKey,
+                        '-Source', $NuGetFeedUrl,
+                        '-ApiKey', $NuGetFeedApiKey,
                         '-ForceEnglishOutput',
                         '-NonInteractive'
                     )
@@ -239,6 +245,6 @@ task Publish {
 
 
 
-task Build  Test, Package
+task Build  Test, Package, Publish
 task Rebuild  Clean, Build
 task Default  Build
