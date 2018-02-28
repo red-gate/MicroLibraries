@@ -157,6 +157,11 @@ satisfying the requirements of section 4a of the License. In practice, this mean
 library in binary releases of your own software without having to also include this notice, a copy of the Licence, or
 any other copyright attribution.
 */
+
+// @formatter:off
+"@
+        $FileFooter = @"
+// @formatter:on
 "@
 
         # Locate source files to be included in the package, and generate their corresponding .pp files.
@@ -168,7 +173,7 @@ any other copyright attribution.
             if ($OriginalContents -ne $ModifiedContents) {
                 Write-Host "  Including file $InputPath"
                 
-                $ModifiedContents = "$FileHeader`r`n`r`n$ModifiedContents"
+                $ModifiedContents = "$FileHeader`r`n`r`n$ModifiedContents`r`n`r`n$FileFooter"
                 
                 $OutputPath = "$InputPath.pp"
                 Write-Host "    Rewriting to $OutputPath"
