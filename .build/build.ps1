@@ -203,7 +203,9 @@ any other copyright attribution.
     }
 
     # Publish the publishable packages as TeamCity artefacts.
-    Get-ChildItem "$DistDir\Publishable" -File -Filter '*.nupkg' | ForEach-Object { TeamCity-PublishArtifact $_.FullName } 
+    if (Test-Path "$DistDir\Publishable") {
+        Get-ChildItem "$DistDir\Publishable" -File -Filter '*.nupkg' | ForEach-Object { TeamCity-PublishArtifact $_.FullName } 
+    }
 }
 
 
