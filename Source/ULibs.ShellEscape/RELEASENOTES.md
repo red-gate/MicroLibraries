@@ -1,5 +1,12 @@
 # ULibs.ShellEscape release notes
 
+## 1.0.0
+
+### Features
+
+- Deployed library is excluded fomr code coverage.
+- Bumped version number for a first "production-ready" release.
+
 ## 0.1.1
 
 ### Features
