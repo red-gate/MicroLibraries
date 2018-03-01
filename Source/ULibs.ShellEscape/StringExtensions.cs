@@ -1,4 +1,5 @@
 ﻿using System;
+/***using System.Diagnostics.CodeAnalysis;***/
 using System.Text.RegularExpressions;
 
 namespace /***$rootnamespace$.***/ULibs.ShellEscape
@@ -6,6 +7,7 @@ namespace /***$rootnamespace$.***/ULibs.ShellEscape
     /// <summary>
     /// Extensions to the <see cref="String"/> class.
     /// </summary>
+    /***[ExcludeFromCodeCoverage]***/
     internal static class StringExtensions
     {
         private static readonly Regex QuotesWithPossibleLeadingBackslashes = new Regex(@"\\*\""");
