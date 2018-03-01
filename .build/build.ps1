@@ -116,7 +116,10 @@ task Package {
         # Establish release notes and package version number from the RELEASENOTES.md file.
         $Notes = Read-ReleaseNotes $ReleaseNotesPath -ThreePartVersion
         $ReleaseNotes = $Notes.Content
-        $Version = $Notes.Version
+        $Version = [version] $Notes.Version
+        if ($env:BUILD_NUMBER) {
+            $Version = [version] "$Version.$($env:BUILD_NUMBER)"
+        }
 
         # Establish the summary and description from the README.md file.
         $Description = [IO.File]::ReadAllText($ReadmePath, [Text.Encoding]::UTF8).Trim()

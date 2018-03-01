@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
@@ -42,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShellEscape\StringExtensionsTests.cs" />
+    <Compile Include="TinyJsonSer\JsonSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -50,6 +54,10 @@
     <ProjectReference Include="..\ULibs.ShellEscape\ULibs.ShellEscape.csproj">
       <Project>{fc0fa749-3a05-4a1d-bd43-f73473936dbe}</Project>
       <Name>ULibs.ShellEscape</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj">
+      <Project>{3960af49-22de-489e-8348-35e32c605b4c}</Project>
+      <Name>ULibs.TinyJsonSer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
