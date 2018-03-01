@@ -1,6 +1,6 @@
-﻿# ULibs.TinyJsonSer release notes
+# ULibs.TinyJsonSer release notes
 
-## 0.1.0
+## 1.0.0
 
 ### Features
 
