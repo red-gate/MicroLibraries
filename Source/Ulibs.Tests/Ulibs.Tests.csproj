@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FullExceptionString\ExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShellEscape\StringExtensionsTests.cs" />
     <Compile Include="TinyJsonSer\JsonSerializerTests.cs" />
@@ -51,6 +52,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ULibs.FullExceptionString\ULibs.FullExceptionString.csproj">
+      <Project>{40ea8064-a654-40d3-9849-9a0e52248de9}</Project>
+      <Name>ULibs.FullExceptionString</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ULibs.ShellEscape\ULibs.ShellEscape.csproj">
       <Project>{fc0fa749-3a05-4a1d-bd43-f73473936dbe}</Project>
       <Name>ULibs.ShellEscape</Name>

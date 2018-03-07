@@ -24,11 +24,6 @@ namespace /***$rootnamespace$.***/ULibs.ShellEscape
         /// <returns>A shell-escaped representation of the string.</returns>
         public static string ShellEscape(this string value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
             // See http://msdn.microsoft.com/en-us/library/a1y7w461.aspx for details on the
             // necessary escaping.
 
@@ -36,7 +31,7 @@ namespace /***$rootnamespace$.***/ULibs.ShellEscape
             // need to double up the back-slash characters, and then escape the double-quotes with
             // a further leading backslash.
             var escaped = QuotesWithPossibleLeadingBackslashes.Replace(
-                value,
+                value ?? throw new ArgumentNullException(nameof(value)),
                 match => new string('\\', 2 * match.Value.Length - 1) + "\"");
 
             // If the string ends with one or more trailing backslashes, we need to double them up.

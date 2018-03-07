@@ -115,6 +115,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     ? Environment.NewLine + new string(' ', i * 2)
                     : "";
             }
+
             _indents = newIndents;
 
             // And finally return the required indent.
@@ -134,27 +135,29 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                 {
                     handler(target, writeString, writeChar);
                 }
-                else switch (target)
-                {
-                    case Enum _:
-                        SerializeEnum(type, target, writeString, writeChar);
-                        break;
-                    case IDictionary _:
-                        SerializeDictionary(target, writeString, writeChar, indentLevel);
-                        break;
-                    case IEnumerable _:
-                        SerializeEnumerable(target, writeString, writeChar, indentLevel);
-                        break;
-                    default:
-                        SerializeObject(target, writeString, writeChar, indentLevel);
-                        break;
-                }
+                else
+                    switch (target)
+                    {
+                        case Enum _:
+                            SerializeEnum(type, target, writeString, writeChar);
+                            break;
+                        case IDictionary _:
+                            SerializeDictionary(target, writeString, writeChar, indentLevel);
+                            break;
+                        case IEnumerable _:
+                            SerializeEnumerable(target, writeString, writeChar, indentLevel);
+                            break;
+                        default:
+                            SerializeObject(target, writeString, writeChar, indentLevel);
+                            break;
+                    }
             }
         }
 
-        private void SerializeDictionary(object target, Action<string> writeString, Action<char> writeChar, int indentLevel)
+        private void SerializeDictionary(object target, Action<string> writeString, Action<char> writeChar,
+                                         int indentLevel)
         {
-            var dictionary = (IDictionary)target;
+            var dictionary = (IDictionary) target;
 
             if (dictionary.Count == 0)
             {
@@ -177,6 +180,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     {
                         writeChar(',');
                     }
+
                     writeString(newIndent);
                     SerializeString(entry.Key.ToString(), writeString, writeChar);
                     writeString(_keyValueSeparator);
@@ -191,16 +195,17 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         private void SerializeObject(object target, Action<string> writeString, Action<char> writeChar, int indentLevel)
         {
             var properties = target.GetType()
-                .GetMembers(BindingFlags.Public | BindingFlags.Instance)
-                .Where(member => member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
-                .Select(member => new
-                {
-                    name = member.Name,
-                    value = member.MemberType == MemberTypes.Field
-                        ? ((FieldInfo)member).GetValue(target)
-                        : ((PropertyInfo)member).GetValue(target, new object[0])
-                })
-                .ToList();
+                                   .GetMembers(BindingFlags.Public | BindingFlags.Instance)
+                                   .Where(member => member.MemberType == MemberTypes.Field ||
+                                                    member.MemberType == MemberTypes.Property)
+                                   .Select(member => new
+                                    {
+                                        name = member.Name,
+                                        value = member.MemberType == MemberTypes.Field
+                                            ? ((FieldInfo) member).GetValue(target)
+                                            : ((PropertyInfo) member).GetValue(target, new object[0])
+                                    })
+                                   .ToList();
 
             if (properties.Count == 0)
             {
@@ -223,6 +228,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     {
                         writeChar(',');
                     }
+
                     writeString(newIndent);
                     SerializeString(ToCamelCase(property.name), writeString, writeChar);
                     writeString(_keyValueSeparator);
@@ -253,12 +259,14 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     break;
                 }
             }
+
             return new string(chars);
         }
 
-        private void SerializeEnumerable(object target, Action<string> writeString, Action<char> writeChar, int indentLevel)
+        private void SerializeEnumerable(object target, Action<string> writeString, Action<char> writeChar,
+                                         int indentLevel)
         {
-            var enumerable = (IEnumerable)target;
+            var enumerable = (IEnumerable) target;
 
             writeChar('[');
 
@@ -277,6 +285,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                 {
                     writeChar(',');
                 }
+
                 writeString(newIndent);
                 Serialize(item, writeString, writeChar, newIndentLevel);
             }
@@ -285,6 +294,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             {
                 writeString(GetIndent(indentLevel));
             }
+
             writeChar(']');
         }
 
@@ -292,7 +302,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         {
             var validNames = new HashSet<string>(Enum.GetNames(enumType));
             var stringValue = Enum.Format(enumType, target, "F");
-            if (stringValue.Split(new[] { ", " }, StringSplitOptions.None).All(validNames.Contains))
+            if (stringValue.Split(new[] {", "}, StringSplitOptions.None).All(validNames.Contains))
             {
                 SerializeString(stringValue, writeString, writeChar);
             }
@@ -304,7 +314,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
 
         private void SerializeUnrecognisedEnumValue(object target, Action<string> writeString, Action<char> writeChar)
         {
-            var value = (Enum)target;
+            var value = (Enum) target;
             switch (value.GetTypeCode())
             {
                 case TypeCode.Byte:
@@ -347,10 +357,10 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         }
 
         private void SerializeDateTimeOffset(object target, Action<string> writeString, Action<char> writeChar)
-            => SerializeDateTime(((DateTimeOffset)target).DateTime, writeString, writeChar);
+            => SerializeDateTime(((DateTimeOffset) target).DateTime, writeString, writeChar);
 
         private void SerializeDateTime(object target, Action<string> writeString, Action<char> writeChar)
-            => SerializeDateTime((DateTime)target, writeString, writeChar);
+            => SerializeDateTime((DateTime) target, writeString, writeChar);
 
         private void SerializeDateTime(DateTime dateTime, Action<string> writeString, Action<char> writeChar)
         {
@@ -358,20 +368,21 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             {
                 dateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
             }
+
             writeChar('"');
             writeString(dateTime.ToString("yyyy-MM-ddTHH:mm:ssZ")); // Standard ISO 8601 UTC date format.
             writeChar('"');
         }
 
         private void SerializeBool(object target, Action<string> writeString, Action<char> writeChar) =>
-            writeString(((bool)target) ? "true" : "false");
+            writeString(((bool) target) ? "true" : "false");
 
         private void SerializeWithToString(object target, Action<string> writeString, Action<char> writeChar) =>
             writeString(target.ToString());
 
         private void SerializeFloat(object target, Action<string> writeString, Action<char> writeChar)
         {
-            var value = (float)target;
+            var value = (float) target;
             if (float.IsInfinity(value))
             {
                 writeString(float.IsPositiveInfinity(value) ? "\"Infinity\"" : "\"-Infinity\"");
@@ -393,7 +404,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
 
         private void SerializeDouble(object target, Action<string> writeString, Action<char> writeChar)
         {
-            var value = (double)target;
+            var value = (double) target;
             if (double.IsInfinity(value))
             {
                 writeString(double.IsPositiveInfinity(value) ? "\"Infinity\"" : "\"-Infinity\"");
@@ -416,11 +427,11 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         /// <summary>
         /// Characters that indicate that a string representation of a number represents a floating point number, rather than just an integer.
         /// </summary>
-        private static readonly char[] FloatingPointIndicatorChars = new char[] { '.', 'E', 'e' };
+        private static readonly char[] FloatingPointIndicatorChars = new char[] {'.', 'E', 'e'};
 
         private void SerializeDecimal(object target, Action<string> writeString, Action<char> writeChar)
         {
-            var value = (Decimal)target;
+            var value = (Decimal) target;
             var stringValue = value.ToString(null, CultureInfo.InvariantCulture);
             writeString(stringValue);
             if (stringValue.IndexOf('.') == -1)
@@ -432,7 +443,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         private void SerializeChar(object target, Action<string> writeString, Action<char> writeChar)
         {
             writeChar('"');
-            SerializeSingleChar((char)target, writeString, writeChar);
+            SerializeSingleChar((char) target, writeString, writeChar);
             writeChar('"');
         }
 
@@ -447,7 +458,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         {
             writeChar('"');
 
-            var str = (string)target;
+            var str = (string) target;
             var length = str.Length;
             for (int i = 0; i < length; i++)
             {
@@ -474,7 +485,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             else
             {
                 writeString("\\u");
-                writeString(((int)ch).ToString("x4"));
+                writeString(((int) ch).ToString("x4"));
             }
         }
 
@@ -487,6 +498,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             {
                 AsciiCharEscapes[i] = "\\u" + i.ToString("x4");
             }
+
             AsciiCharEscapes[127] = "\\u" + 127.ToString("x4");
             AsciiCharEscapes['\"'] = "\\\"";
             AsciiCharEscapes['\\'] = "\\\\";

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.UlibsProjectTemplate"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ulibs.Tests", "Ulibs.Tests\Ulibs.Tests.csproj", "{DBEB3FFA-0B24-4207-8E18-9634BF8C86B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ULibs.TinyJsonSer", "ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj", "{3960AF49-22DE-489E-8348-35E32C605B4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.TinyJsonSer", "ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj", "{3960AF49-22DE-489E-8348-35E32C605B4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.FullExceptionString", "ULibs.FullExceptionString\ULibs.FullExceptionString.csproj", "{40EA8064-A654-40D3-9849-9A0E52248DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3960AF49-22DE-489E-8348-35E32C605B4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3960AF49-22DE-489E-8348-35E32C605B4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3960AF49-22DE-489E-8348-35E32C605B4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
