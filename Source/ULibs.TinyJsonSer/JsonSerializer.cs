@@ -21,7 +21,8 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
     /***[ExcludeFromCodeCoverage]***/
     internal sealed class JsonSerializer
     {
-        private readonly IDictionary<Type, Action<object, Action<string>, Action<char>>> _basicHandlers;
+        private readonly IReadOnlyDictionary<Type, Action<object, Action<string>, Action<char>>> _basicHandlers;
+        private readonly IReadOnlyDictionary<TypeCode, Action<object, Action<string>, Action<char>>> _unrecognisedEnumTypeHandlers;
         private readonly bool _indented;
         private readonly string _keyValueSeparator;
         private string[] _indents = new string[0];
@@ -55,6 +56,17 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     [typeof(DateTimeOffset)] = SerializeDateTimeOffset,
                     [typeof(Guid)] = SerializeGuid,
                 };
+            _unrecognisedEnumTypeHandlers = new Dictionary<TypeCode, Action<object, Action<string>, Action<char>>>
+            {
+                [TypeCode.Byte] = _basicHandlers[typeof(byte)],
+                [TypeCode.SByte] = _basicHandlers[typeof(sbyte)],
+                [TypeCode.Int16] = _basicHandlers[typeof(short)],
+                [TypeCode.UInt16] = _basicHandlers[typeof(ushort)],
+                [TypeCode.Int32] = _basicHandlers[typeof(int)],
+                [TypeCode.UInt32] = _basicHandlers[typeof(uint)],
+                [TypeCode.Int64] = _basicHandlers[typeof(long)],
+                [TypeCode.UInt64] = _basicHandlers[typeof(ulong)]
+            };
             _indented = indented;
             _keyValueSeparator = indented ? ": " : ":";
         }
@@ -304,46 +316,9 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
 
         private void SerializeUnrecognisedEnumValue(object target, Action<string> writeString, Action<char> writeChar)
         {
-            var value = (Enum)target;
-            switch (value.GetTypeCode())
-            {
-                case TypeCode.Byte:
-                    _basicHandlers[typeof(byte)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.SByte:
-                    _basicHandlers[typeof(sbyte)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.Int16:
-                    _basicHandlers[typeof(short)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.UInt16:
-                    _basicHandlers[typeof(ushort)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.Int32:
-                    _basicHandlers[typeof(int)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.UInt32:
-                    _basicHandlers[typeof(uint)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.Int64:
-                    _basicHandlers[typeof(long)](target, writeString, writeChar);
-                    break;
-
-                case TypeCode.UInt64:
-                    _basicHandlers[typeof(ulong)](target, writeString, writeChar);
-                    break;
-
-                default:
-                    // Shouldn't hit this case, as all of the valid Enum base-types are covered above.
-                    writeString("null");
-                    break;
-            }
+            var value = (Enum) target;
+            var handler = _unrecognisedEnumTypeHandlers[value.GetTypeCode()];
+            handler(target, writeString, writeChar);
         }
 
         private void SerializeDateTimeOffset(object target, Action<string> writeString, Action<char> writeChar)
