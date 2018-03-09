@@ -78,9 +78,11 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         /// <returns>A JSON representation of the <paramref name="target"/> object.</returns>
         public string Serialize(object target)
         {
-            var writer = new StringWriter();
-            Serialize(target, writer);
-            return writer.ToString();
+            using (var writer = new StringWriter())
+            {
+                Serialize(target, writer);
+                return writer.ToString();
+            }
         }
 
         /// <summary>
