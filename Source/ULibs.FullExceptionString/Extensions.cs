@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace /***$rootnamespace$.***/ULibs.FullExceptionString
 {
@@ -75,7 +74,7 @@ namespace /***$rootnamespace$.***/ULibs.FullExceptionString
 
             void WriteLine(object item) => writeLine(indent + item);
 
-            WriteLine($"{exception.GetType()}: {exception.Message}");
+            WriteLine($"{exception.GetType().FullName}: {exception.Message}");
             var exceptionStacktrace = exception.StackTrace;
             if (exceptionStacktrace != null)
             {
