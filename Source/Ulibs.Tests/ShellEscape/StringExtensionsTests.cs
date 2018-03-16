@@ -10,6 +10,12 @@ namespace Ulibs.Tests.ShellEscape
     [TestFixture]
     public class StringExtensionsTests
     {
+        [Test]
+        public void CheckShellEscape_WithNullString()
+        {
+            Assert.Throws<ArgumentNullException>(() => ((string) null).ShellEscape());
+        }
+
         private static IEnumerable<TestCaseData> CheckShellEscape_TestData()
         {
             TestCaseData Create(string value, string name) => new TestCaseData(value).SetName(name);
