@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -9,6 +11,40 @@ namespace Ulibs.Tests.TinyJsonSer
     [TestFixture]
     public class JsonSerializerTests
     {
+        [Test]
+        public void SerializeToStringBuilder()
+        {
+            var builder = new StringBuilder();
+            new ULibs.TinyJsonSer.JsonSerializer(false).Serialize(new object[] {123, "abc"}, builder);
+            var json = builder.ToString();
+            Assert.That(json, Is.EqualTo("[123,\"abc\"]"));
+        }
+
+        [Test]
+        public void SerializeToStringBuilder_NullBuilderCheck()
+        {
+            var serializer = new ULibs.TinyJsonSer.JsonSerializer(false);
+            Assert.Throws<ArgumentNullException>(() => serializer.Serialize("abc", (StringBuilder) null));
+        }
+
+        [Test]
+        public void SerializeToTextWriter()
+        {
+            using (var writer = new StringWriter())
+            {
+                new ULibs.TinyJsonSer.JsonSerializer(false).Serialize(new object[] { 123, "abc" }, writer);
+                var json = writer.ToString();
+                Assert.That(json, Is.EqualTo("[123,\"abc\"]"));
+            }
+        }
+
+        [Test]
+        public void SerializeToTextWriter_NullWriterCheck()
+        {
+            var serializer = new ULibs.TinyJsonSer.JsonSerializer(false);
+            Assert.Throws<ArgumentNullException>(() => serializer.Serialize("abc", (TextWriter) null));
+        }
+
         /// <summary>
         /// Factory method that creates a new serializer to be tested.
         /// </summary>

@@ -1,5 +1,12 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.1
+
+### Improvements
+
+- Refactoring to simplify the handling of unrecognised enum values.
+- More correct usage of temporary StringWriter.
+
 ## 1.0.0
 
 ### Features
