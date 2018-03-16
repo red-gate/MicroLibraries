@@ -91,7 +91,11 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         /// <param name="target">The target object to be converted to JSON.</param>
         /// <param name="writer">The writer to which a JSON representation of the <paramref name="target"/> object
         /// is written.</param>
-        public void Serialize(object target, TextWriter writer) => Serialize(target, writer.Write, writer.Write, 0);
+        public void Serialize(object target, TextWriter writer)
+        {
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+            Serialize(target, writer.Write, writer.Write, 0);
+        }
 
         /// <summary>
         /// Serializes the specified object to its equivalent JSON representation.
@@ -100,7 +104,10 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         /// <param name="builder">The builder to which a JSON representation of the <paramref name="target"/> object
         /// is written.</param>
         public void Serialize(object target, StringBuilder builder)
-            => Serialize(target, x => builder.Append(x), x => builder.Append(x), 0);
+        {
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
+            Serialize(target, x => builder.Append(x), x => builder.Append(x), 0);
+        }
 
         private string GetIndent(int indentLevel)
         {
