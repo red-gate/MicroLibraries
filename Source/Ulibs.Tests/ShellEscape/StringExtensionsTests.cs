@@ -141,7 +141,7 @@ namespace Ulibs.Tests.ShellEscape
 
         /// <summary>
         /// Given an arguments string, such as
-        /// <see cref="ProcessStartInfo.Arguments">ProcessStartInfo.Arguments</see>, this method
+        /// <see cref="System.Diagnostics.ProcessStartInfo.Arguments">ProcessStartInfo.Arguments</see>, this method
         /// returns the string array that would be passed to the static Main method entry point of
         /// a .NET process.
         /// </summary>
@@ -150,10 +150,8 @@ namespace Ulibs.Tests.ShellEscape
         /// method entry point of a .NET process.</returns>
         private static string[] ToMainMethodArgsArray(string processArguments)
         {
-            int argc;
-
             // We need to pass in an exe for this imported function to work.
-            var argv = CommandLineToArgvW("a.exe " + processArguments, out argc);
+            var argv = CommandLineToArgvW("a.exe " + processArguments, out var argc);
             if (argv == IntPtr.Zero)
             {
                 throw new Exception($"Failed to convert '{processArguments}' to args array");

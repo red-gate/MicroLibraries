@@ -177,7 +177,7 @@ namespace Ulibs.Tests.FullExceptionString
         {
             var firstChildException = FillInStackTrace(new Exception("first-child-message"));
             var secondChildException = FillInStackTrace(new Exception("second-child-message"));
-            var outerException = FillInStackTrace(new AggregateException(new [] {firstChildException, secondChildException}));
+            var outerException = FillInStackTrace(new AggregateException(firstChildException, secondChildException));
 
             var fullExceptionString = outerException.ToFullExceptionString();
 

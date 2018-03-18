@@ -55,7 +55,7 @@ namespace Ulibs.Tests.TinyJsonSer
         /// Factory method that creates a reference serializer based on the Newtonsoft.Json code.
         /// </summary>
         private Func<object, string> CreateReferenceSerializer(bool indented)
-            => target => Newtonsoft.Json.JsonConvert.SerializeObject(target, new JsonSerializerSettings
+            => target => JsonConvert.SerializeObject(target, new JsonSerializerSettings
             {
                 Formatting = indented ? Formatting.Indented : Formatting.None,
                 DateFormatString = "yyyy-MM-ddTHH:mm:ssZ",
