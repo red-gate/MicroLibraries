@@ -85,7 +85,8 @@ namespace Ulibs.Tests.ShellEscape
             yield return Create(@"c:\another temp", "Folder path with a space in it");
             yield return Create(@"c:\another temp\", "Folder path with a space in it and a trailing backslash");
 
-            yield return Create(new string(Enumerable.Range(1, 127).Select(i => (char)i).ToArray()), "Chars from 1 to 127");
+            yield return Create(new string(Enumerable.Range(1, 127).Select(i => (char) i).ToArray()),
+                                "Chars from 1 to 127");
 
             yield return Create(@"£$%^&<>{}=+-~#`", "Common chars");
             yield return Create(@"ùûüÿ€ »« œôîïëêèéçæâà", "French");
@@ -105,26 +106,26 @@ namespace Ulibs.Tests.ShellEscape
 
             // ASSERT
             string[] args = ToMainMethodArgsArray(escapedArguments);
-            Assert.That(args, Is.EqualTo(new[] { value }));
+            Assert.That(args, Is.EqualTo(new[] {value}));
         }
 
         private static IEnumerable<TestCaseData> CheckShellEscape_WithMultipleArguments_TestData()
         {
             TestCaseData Create(string[] value, string name) => new TestCaseData((object) value).SetName(name);
 
-            yield return Create(new[] { "abc", "def" }, "Two words");
+            yield return Create(new[] {"abc", "def"}, "Two words");
 
-            yield return Create(new[] { "ab\"cd", "ef" }, "First word contains double-quotes");
-            yield return Create(new[] { "ab", "cd\"ef" }, "Second word contains double-quotes");
+            yield return Create(new[] {"ab\"cd", "ef"}, "First word contains double-quotes");
+            yield return Create(new[] {"ab", "cd\"ef"}, "Second word contains double-quotes");
 
-            yield return Create(new[] { "ab\'cd", "ef" }, "First word contains single-quotes");
-            yield return Create(new[] { "ab", "cd\'ef" }, "Second word contains single-quotes");
+            yield return Create(new[] {"ab\'cd", "ef"}, "First word contains single-quotes");
+            yield return Create(new[] {"ab", "cd\'ef"}, "Second word contains single-quotes");
 
-            yield return Create(new[] { "\"\'", "\'\"" }, "A mixture of double and single-quotes");
+            yield return Create(new[] {"\"\'", "\'\""}, "A mixture of double and single-quotes");
 
-            yield return Create(new[] { "ab cd", "ef gh" }, "Spaces inside both words");
-            yield return Create(new[] { " abc", " def" }, "Spaces before both words");
-            yield return Create(new[] { "abc ", "def " }, "Spaces after both words");
+            yield return Create(new[] {"ab cd", "ef gh"}, "Spaces inside both words");
+            yield return Create(new[] {" abc", " def"}, "Spaces before both words");
+            yield return Create(new[] {"abc ", "def "}, "Spaces after both words");
         }
 
         [Test, TestCaseSource(nameof(CheckShellEscape_WithMultipleArguments_TestData))]
@@ -140,7 +141,7 @@ namespace Ulibs.Tests.ShellEscape
 
         /// <summary>
         /// Given an arguments string, such as
-        /// <see cref="ProcessStartInfo.Arguments">ProcessStartInfo.Arguments</see>, this method
+        /// <see cref="System.Diagnostics.ProcessStartInfo.Arguments">ProcessStartInfo.Arguments</see>, this method
         /// returns the string array that would be passed to the static Main method entry point of
         /// a .NET process.
         /// </summary>
@@ -149,10 +150,8 @@ namespace Ulibs.Tests.ShellEscape
         /// method entry point of a .NET process.</returns>
         private static string[] ToMainMethodArgsArray(string processArguments)
         {
-            int argc;
-
             // We need to pass in an exe for this imported function to work.
-            var argv = CommandLineToArgvW("a.exe " + processArguments, out argc);
+            var argv = CommandLineToArgvW("a.exe " + processArguments, out var argc);
             if (argv == IntPtr.Zero)
             {
                 throw new Exception($"Failed to convert '{processArguments}' to args array");
