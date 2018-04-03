@@ -52,6 +52,14 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
     /***[ExcludeFromCodeCoverage]***/
     internal sealed class JsonDeserializer
     {
+        /// <summary>
+        /// Tries to parse a json string to an object.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result, which will be either a
+        /// <c>bool</c>, a <c>string</c>, a <c>double</c>, an <c>object[]</c>, an <c>IDictionary&lt;string, object&gt;</c>
+        /// or <c>null</c>.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseValue(string json, out object output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -63,6 +71,12 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse a json string to boolean literal.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseBool(string json, out bool output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -74,6 +88,11 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse a json string as the null literal.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseNull(string json)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -85,6 +104,12 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse a json string as a number.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseNumber(string json, out double output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -96,6 +121,12 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse an escaped json string.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseString(string json, out string output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -107,6 +138,12 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse a json array.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseArray(string json, out object[] output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
@@ -118,6 +155,12 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return offset == json.Length;
         }
 
+        /// <summary>
+        /// Tries to parse a json object.
+        /// </summary>
+        /// <param name="json">The json string to parse.</param>
+        /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
+        /// <returns>Whether or not the parse attempt succeeded.</returns>
         public bool TryParseObject(string json, out IDictionary<string, object> output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
