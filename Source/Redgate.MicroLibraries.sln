@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.TinyJsonSer", "ULibs.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.FullExceptionString", "ULibs.FullExceptionString\ULibs.FullExceptionString.csproj", "{40EA8064-A654-40D3-9849-9A0E52248DE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ULibs.TinyJsonDeser", "ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj", "{F46791E7-5434-400B-B5B4-6659909C262E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40EA8064-A654-40D3-9849-9A0E52248DE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46791E7-5434-400B-B5B4-6659909C262E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46791E7-5434-400B-B5B4-6659909C262E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46791E7-5434-400B-B5B4-6659909C262E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46791E7-5434-400B-B5B4-6659909C262E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
