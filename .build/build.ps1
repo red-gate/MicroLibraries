@@ -162,6 +162,7 @@ any other copyright attribution.
 */
 
 // @formatter:off
+// ReSharper disable All
 "@
         $FileFooter = @"
 // @formatter:on
