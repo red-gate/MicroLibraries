@@ -1,5 +1,11 @@
 # ULibs.TinyJsonDeser release notes
 
+## 1.0.1
+
+### Features
+
+- Improved code readability for parsing `true`, `false` and `null`.
+
 ## 1.0.0
 
 ### Features
