@@ -191,7 +191,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                 var newIndentLevel = indentLevel + 1;
                 var newIndent = GetIndent(newIndentLevel);
                 bool isFirstElement = true;
-                foreach (DictionaryEntry entry in dictionary)
+                foreach (var key in dictionary.Keys)
                 {
                     if (isFirstElement)
                     {
@@ -203,9 +203,9 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     }
 
                     writeString(newIndent);
-                    SerializeString(entry.Key.ToString(), writeString, writeChar);
+                    SerializeString(key.ToString(), writeString, writeChar);
                     writeString(_keyValueSeparator);
-                    Serialize(entry.Value, writeString, writeChar, newIndentLevel);
+                    Serialize(dictionary[key], writeString, writeChar, newIndentLevel);
                 }
 
                 writeString(GetIndent(indentLevel));

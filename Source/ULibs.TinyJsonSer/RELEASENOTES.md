@@ -1,5 +1,11 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.2
+
+### Improvements
+
+- Removed use of `DictionaryEntry` type, to improve cross-platform compatibility.
+
 ## 1.0.1
 
 ### Improvements

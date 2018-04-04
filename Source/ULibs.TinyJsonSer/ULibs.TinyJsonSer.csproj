@@ -5,4 +5,8 @@
     <Copyright>2016</Copyright>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" />
+  </ItemGroup>
+
 </Project>
