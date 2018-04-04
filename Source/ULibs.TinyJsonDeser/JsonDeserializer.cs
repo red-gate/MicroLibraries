@@ -247,10 +247,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                 switch (json[offset])
                 {
                     case 't':
-                        if (offset < json.Length - 3 &&
-                            json[offset + 1] == 'r' &&
-                            json[offset + 2] == 'u' &&
-                            json[offset + 3] == 'e')
+                        if (offset < json.Length - 3 && json.Substring(offset, 4) == "true")
                         {
                             offset += 4;
                             output = true;
@@ -260,11 +257,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                         break;
 
                     case 'f':
-                        if (offset < json.Length - 4 &&
-                            json[offset + 1] == 'a' &&
-                            json[offset + 2] == 'l' &&
-                            json[offset + 3] == 's' &&
-                            json[offset + 4] == 'e')
+                        if (offset < json.Length - 4 && json.Substring(offset, 5) == "false")
                         {
                             offset += 5;
                             return true;
@@ -279,11 +272,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
         private static bool TryParseNull(string json, ref int offset)
         {
-            if (offset < json.Length - 3 &&
-                json[offset] == 'n' &&
-                json[offset + 1] == 'u' &&
-                json[offset + 2] == 'l' &&
-                json[offset + 3] == 'l')
+            if (offset < json.Length - 3 && json.Substring(offset, 4) == "null")
             {
                 offset += 4;
                 return true;
