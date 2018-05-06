@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcurrentForEach\ConcurrentTests.cs" />
     <Compile Include="FullExceptionString\ExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShellEscape\StringExtensionsTests.cs" />
@@ -53,6 +54,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ULibs.ConcurrentForEach\ULibs.ConcurrentForEach.csproj">
+      <Project>{b9950135-5a39-4b4c-8a61-d6105ca03396}</Project>
+      <Name>ULibs.ConcurrentForEach</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ULibs.FullExceptionString\ULibs.FullExceptionString.csproj">
       <Project>{40ea8064-a654-40d3-9849-9a0e52248de9}</Project>
       <Name>ULibs.FullExceptionString</Name>
@@ -69,6 +74,9 @@
       <Project>{3960af49-22de-489e-8348-35e32c605b4c}</Project>
       <Name>ULibs.TinyJsonSer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
