@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
@@ -279,6 +280,95 @@ namespace Ulibs.Tests.TinyJsonSer
                                               },
                                               ["ghi"] = false
                                           }).SetName("dictionary (with nested elements)");
+            dynamic expando = new ExpandoObject();
+            expando.SomeProperty = 123;
+            yield return new TestCaseData(true, expando).SetName("ExpandoObject");
+
+            yield return new TestCaseData(true, new CustomEnumerable<string>("ABC")).SetName("Custom IEnumerable<string>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomEnumerable<KeyValuePair<string, object>>(
+                        new KeyValuePair<string, object>("ABC", 123)))
+               .SetName("Custom IEnumerable<KeyValuePair<string, object>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomEnumerable<KeyValuePair<string, string>>(
+                        new KeyValuePair<string, string>("ABC", "123")))
+               .SetName("Custom IEnumerable<KeyValuePair<string, string>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomEnumerable<KeyValuePair<object, object>>(
+                        new KeyValuePair<object, object>("ABC", 123)))
+               .SetName("Custom IEnumerable<KeyValuePair<object, object>>");
+
+            yield return new TestCaseData(true, new CustomReadOnlyCollection<string>("ABC")).SetName(
+                "Custom IReadOnlyCollection<string>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyCollection<KeyValuePair<string, object>>(
+                        new KeyValuePair<string, object>("ABC", 123)))
+               .SetName("Custom IReadOnlyCollection<KeyValuePair<string, object>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyCollection<KeyValuePair<string, string>>(
+                        new KeyValuePair<string, string>("ABC", "123")))
+               .SetName("Custom IReadOnlyCollection<KeyValuePair<string, string>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyCollection<KeyValuePair<object, object>>(
+                        new KeyValuePair<object, object>("ABC", "123")))
+               .SetName("Custom IReadOnlyCollection<KeyValuePair<object, object>>");
+
+            yield return new TestCaseData(true, new CustomReadOnlyList<string>("ABC")).SetName(
+                "Custom IReadOnlyList<string>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyList<KeyValuePair<string, object>>(
+                        new KeyValuePair<string, object>("ABC", 123)))
+               .SetName("Custom IReadOnlyList<KeyValuePair<string, object>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyList<KeyValuePair<string, string>>(
+                        new KeyValuePair<string, string>("ABC", "123")))
+               .SetName("Custom IReadOnlyList<KeyValuePair<string, string>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyList<KeyValuePair<object, object>>(
+                        new KeyValuePair<object, object>("ABC", "123")))
+               .SetName("Custom IReadOnlyList<KeyValuePair<object, object>>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyDictionary<string, object>("ABC", 123))
+               .SetName("Custom IReadOnlyDictionary<string, object>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyDictionary<string, string>("ABC", "123"))
+               .SetName("Custom IReadOnlyDictionary<string, string>");
+
+            yield return new TestCaseData(
+                    true,
+                    new CustomReadOnlyDictionary<object, object>("ABC", "123"))
+               .SetName("Custom IReadOnlyDictionary<object, object>");
+
+            yield return new TestCaseData(true, new CustomDictionary<string, object>("ABC", 123))
+               .SetName("Custom IDictionary<string, object>");
+
+            yield return new TestCaseData(true, new CustomDictionary<string, string>("ABC", "123"))
+               .SetName("Custom IDictionary<string, string>");
+
+            yield return new TestCaseData(true, new CustomDictionary<object, object>("ABC", "123"))
+               .SetName("Custom IDictionary<object, object>");
         }
 
         [Flags]

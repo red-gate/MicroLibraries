@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 /***using System.Diagnostics.CodeAnalysis;***/
 using System.Globalization;
 using System.IO;
@@ -162,11 +163,22 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                         case Enum _:
                             SerializeEnum(type, target, writeString, writeChar);
                             break;
-                        case IDictionary _:
-                            SerializeDictionary(target, writeString, writeChar, indentLevel);
+                        case IEnumerable<KeyValuePair<string, object>> enumerable
+                            when enumerable is ExpandoObject ||
+                                 enumerable is IDictionary<string, object> ||
+                                 enumerable is IReadOnlyDictionary<string, object>:
+                            SerializeObjectProperties(enumerable, writeString, writeChar, indentLevel);
                             break;
-                        case IEnumerable _:
-                            SerializeEnumerable(target, writeString, writeChar, indentLevel);
+                        case IDictionary dictionary:
+                            SerializeNonGenericDictionary(dictionary, writeString, writeChar, indentLevel);
+                            break;
+                        // ReSharper disable PossibleMultipleEnumeration
+                        case IEnumerable enumerable when IsGenericDictionary(enumerable):
+                            SerializeGenericDictionary(enumerable, writeString, writeChar, indentLevel);
+                            break;
+                        // ReSharper restore PossibleMultipleEnumeration
+                        case IEnumerable enumerable:
+                            SerializeEnumerable(enumerable, writeString, writeChar, indentLevel);
                             break;
                         default:
                             SerializeObject(target, writeString, writeChar, indentLevel);
@@ -175,11 +187,46 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             }
         }
 
-        private void SerializeDictionary(object target, Action<string> writeString, Action<char> writeChar,
-                                         int indentLevel)
+        private static bool IsGenericDictionary(IEnumerable enumerable)
         {
-            var dictionary = (IDictionary) target;
+            var type = enumerable.GetType();
+            var list = new List<Type>(type.GetInterfaces()) { type };
+            return list.Where(item => item.IsInterface && item.IsGenericType)
+                       .Select(item => item.GetGenericTypeDefinition())
+                       .Any(item => typeof(IDictionary<,>).IsAssignableFrom(item) ||
+                                    typeof(IReadOnlyDictionary<,>).IsAssignableFrom(item));
+        }
 
+        private void SerializeGenericDictionary(IEnumerable enumerable, Action<string> writeString,
+                                                Action<char> writeChar, int indentLevel)
+        {
+            var properties = new List<KeyValuePair<string, object>>();
+
+            PropertyInfo keyInfo = null;
+            PropertyInfo valueInfo = null;
+            foreach (var item in enumerable)
+            {
+                if (keyInfo == null)
+                {
+                    var type = item.GetType();
+                    keyInfo = type.GetProperty("Key", BindingFlags.Instance | BindingFlags.Public);
+                    valueInfo = type.GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
+                }
+
+                // ReSharper disable PossibleNullReferenceException
+                var key = keyInfo.GetValue(item).ToString();
+                var value = valueInfo.GetValue(item);
+                // ReSharper restore PossibleNullReferenceException
+                properties.Add(new KeyValuePair<string, object>(key, value));
+            }
+
+            SerializeObjectProperties(properties, writeString, writeChar, indentLevel);
+        }
+
+
+        private void SerializeNonGenericDictionary(IDictionary dictionary, Action<string> writeString,
+                                                   Action<char> writeChar, int indentLevel)
+        {
             if (dictionary.Count == 0)
             {
                 writeString("{}");
@@ -190,7 +237,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
 
                 var newIndentLevel = indentLevel + 1;
                 var newIndent = GetIndent(newIndentLevel);
-                bool isFirstElement = true;
+                var isFirstElement = true;
                 foreach (var key in dictionary.Keys)
                 {
                     if (isFirstElement)
@@ -219,46 +266,47 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                                    .GetMembers(BindingFlags.Public | BindingFlags.Instance)
                                    .Where(member => member.MemberType == MemberTypes.Field ||
                                                     member.MemberType == MemberTypes.Property)
-                                   .Select(member => new
-                                    {
-                                        name = member.Name,
-                                        value = member.MemberType == MemberTypes.Field
-                                            ? ((FieldInfo) member).GetValue(target)
-                                            : ((PropertyInfo) member).GetValue(target, new object[0])
-                                    })
-                                   .ToList();
+                                   .Select(member => new KeyValuePair<string, object>(
+                                               member.Name,
+                                               member.MemberType == MemberTypes.Field
+                                                   ? ((FieldInfo) member).GetValue(target)
+                                                   : ((PropertyInfo) member).GetValue(target, new object[0])));
+            SerializeObjectProperties(properties, writeString, writeChar, indentLevel);
+        }
 
-            if (properties.Count == 0)
-            {
-                writeString("{}");
-            }
-            else
-            {
-                writeChar('{');
+        private void SerializeObjectProperties(IEnumerable<KeyValuePair<string, object>> properties,
+                                               Action<string> writeString, Action<char> writeChar, int indentLevel)
+        {
+            writeChar('{');
 
-                var newIndentLevel = indentLevel + 1;
-                var newIndent = GetIndent(newIndentLevel);
-                bool isFirstElement = true;
-                foreach (var property in properties)
+            var newIndentLevel = indentLevel + 1;
+            var newIndent = GetIndent(newIndentLevel);
+            var isFirstElement = true;
+            var hasElements = false;
+            foreach (var property in properties)
+            {
+                if (isFirstElement)
                 {
-                    if (isFirstElement)
-                    {
-                        isFirstElement = false;
-                    }
-                    else
-                    {
-                        writeChar(',');
-                    }
-
-                    writeString(newIndent);
-                    SerializeString(ToCamelCase(property.name), writeString, writeChar);
-                    writeString(_keyValueSeparator);
-                    Serialize(property.value, writeString, writeChar, newIndentLevel);
+                    hasElements = true;
+                    isFirstElement = false;
+                }
+                else
+                {
+                    writeChar(',');
                 }
 
-                writeString(GetIndent(indentLevel));
-                writeChar('}');
+                writeString(newIndent);
+                SerializeString(ToCamelCase(property.Key), writeString, writeChar);
+                writeString(_keyValueSeparator);
+                Serialize(property.Value, writeString, writeChar, newIndentLevel);
             }
+
+            if (hasElements)
+            {
+                writeString(GetIndent(indentLevel));
+            }
+
+            writeChar('}');
         }
 
         private static string ToCamelCase(string value)
@@ -284,22 +332,20 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             return new string(chars);
         }
 
-        private void SerializeEnumerable(object target, Action<string> writeString, Action<char> writeChar,
+        private void SerializeEnumerable(IEnumerable enumerable, Action<string> writeString, Action<char> writeChar,
                                          int indentLevel)
         {
-            var enumerable = (IEnumerable) target;
-
             writeChar('[');
 
             var newIndentLevel = indentLevel + 1;
             var newIndent = GetIndent(newIndentLevel);
-            bool isFirstElement = true;
-            bool isEmpty = true;
+            var isFirstElement = true;
+            var hasElements = false;
             foreach (var item in enumerable)
             {
-                isEmpty = false;
                 if (isFirstElement)
                 {
+                    hasElements = true;
                     isFirstElement = false;
                 }
                 else
@@ -311,7 +357,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                 Serialize(item, writeString, writeChar, newIndentLevel);
             }
 
-            if (!isEmpty)
+            if (hasElements)
             {
                 writeString(GetIndent(indentLevel));
             }
