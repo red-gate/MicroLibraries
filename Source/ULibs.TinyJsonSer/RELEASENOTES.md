@@ -1,5 +1,11 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.3
+
+### Bug fixes
+
+- Bug 10: Correctly serialise a dynamic `ExpandoObject` as a json object rather than a json array.
+
 ## 1.0.2
 
 ### Improvements
