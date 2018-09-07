@@ -4,10 +4,10 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Wingdi
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAPINFO
+    internal struct BITMAPINFO
     {
-        public BITMAPINFOHEADER bmiHeader;
+        internal BITMAPINFOHEADER bmiHeader;
         [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 1, ArraySubType = UnmanagedType.Struct)]
-        public RGBQUAD[] bmiColors;
+        internal RGBQUAD[] bmiColors;
     }
 }

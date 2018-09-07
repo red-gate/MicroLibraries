@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum MA
+    internal enum MA
     {
 
         ACTIVATE = 1,

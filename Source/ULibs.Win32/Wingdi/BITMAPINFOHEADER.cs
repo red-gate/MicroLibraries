@@ -4,18 +4,18 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Wingdi
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BITMAPINFOHEADER
+    internal struct BITMAPINFOHEADER
     {
-        public int biSize;
-        public int biWidth;
-        public int biHeight;
-        public short biPlanes;
-        public short biBitCount;
-        public BI biCompression;
-        public int biSizeImage;
-        public int biXPelsPerMeter;
-        public int biYPelsPerMeter;
-        public int biClrUsed;
-        public int biClrImportant;
+        internal int biSize;
+        internal int biWidth;
+        internal int biHeight;
+        internal short biPlanes;
+        internal short biBitCount;
+        internal BI biCompression;
+        internal int biSizeImage;
+        internal int biXPelsPerMeter;
+        internal int biYPelsPerMeter;
+        internal int biClrUsed;
+        internal int biClrImportant;
     }
 }

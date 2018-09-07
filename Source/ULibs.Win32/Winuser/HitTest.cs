@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum HitTest
+    internal enum HitTest
     {
         HTNOWHERE = 0,
         HTCLIENT = 1,

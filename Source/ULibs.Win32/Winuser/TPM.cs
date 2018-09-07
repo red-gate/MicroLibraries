@@ -4,7 +4,7 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum TPM
+    internal enum TPM
     {
         CENTERALIGN = 0x0004,
         LEFTALIGN = 0x0000,

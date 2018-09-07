@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum GCLP
+    internal enum GCLP
     {
 
         GCLP_HBRBACKGROUND = -10,

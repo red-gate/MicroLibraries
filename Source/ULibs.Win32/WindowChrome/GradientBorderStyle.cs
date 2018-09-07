@@ -25,10 +25,10 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         private GradientBitmap m_Bottom;
         private GradientBitmap m_BottomRight;
 
-        public int BorderWidth { get; private set; }
-        public int BorderHeight { get; private set; }
+        internal int BorderWidth { get; private set; }
+        internal int BorderHeight { get; private set; }
 
-        public static GradientBorderStyle Create(int width, int height, byte glowAlpha, COLORREF glowColor, COLORREF borderColor)
+        internal static GradientBorderStyle Create(int width, int height, byte glowAlpha, COLORREF glowColor, COLORREF borderColor)
         {
             var gbs = new GradientBorderStyle
             {

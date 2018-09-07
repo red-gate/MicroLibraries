@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum IDC
+    internal enum IDC
     {
         ARROW = 32512,
         IBEAM = 32513,

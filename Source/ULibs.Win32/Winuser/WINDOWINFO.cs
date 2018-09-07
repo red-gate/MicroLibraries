@@ -5,17 +5,17 @@ using ULibs.Win32.Windef;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct WINDOWINFO
+    internal struct WINDOWINFO
     {
-        public int cbSize;
-        public RECT rcWindow;
-        public RECT rcClient;
-        public int dwStyle;
-        public int dwExStyle;
-        public uint dwWindowStatus;
-        public uint cxWindowBorders;
-        public uint cyWindowBorders;
-        public ushort atomWindowType;
-        public ushort wCreatorVersion;
+        internal int cbSize;
+        internal RECT rcWindow;
+        internal RECT rcClient;
+        internal int dwStyle;
+        internal int dwExStyle;
+        internal uint dwWindowStatus;
+        internal uint cxWindowBorders;
+        internal uint cyWindowBorders;
+        internal ushort atomWindowType;
+        internal ushort wCreatorVersion;
     }
 }

@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct WINDOWPOS
+    internal struct WINDOWPOS
     {
-        public IntPtr hwnd;
-        public IntPtr hwndInsertAfter;
-        public int x;
-        public int y;
-        public int cx;
-        public int cy;
-        public int flags;
+        internal IntPtr hwnd;
+        internal IntPtr hwndInsertAfter;
+        internal int x;
+        internal int y;
+        internal int cx;
+        internal int cy;
+        internal int flags;
     }
 }

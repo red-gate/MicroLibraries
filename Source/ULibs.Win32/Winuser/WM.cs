@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum WM : uint
+    internal enum WM : uint
     {
         NULL = 0x0,
         CREATE = 0x1,

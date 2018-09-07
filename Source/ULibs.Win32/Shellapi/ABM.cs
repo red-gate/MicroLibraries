@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Shellapi
 {
-    public enum ABM
+    internal enum ABM
     {
         NEW = 0x00000000,
         REMOVE = 0x00000001,

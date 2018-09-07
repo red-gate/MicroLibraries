@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum SW
+    internal enum SW
     {
         HIDE = 0,
         SHOWNORMAL = 1,

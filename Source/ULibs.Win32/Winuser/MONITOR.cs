@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum MONITOR
+    internal enum MONITOR
     {
         DEFAULTTONULL = 0,
         DEFAULTTOPRIMARY = 1,

@@ -4,11 +4,11 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct BLENDFUNCTION
+    internal struct BLENDFUNCTION
     {
-        public byte BlendOp;
-        public byte BlendFlags;
-        public byte SourceConstantAlpha;
-        public byte AlphaFormat;
+        internal byte BlendOp;
+        internal byte BlendFlags;
+        internal byte SourceConstantAlpha;
+        internal byte AlphaFormat;
     }
 }

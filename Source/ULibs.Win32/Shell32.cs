@@ -4,9 +4,9 @@ using ULibs.Win32.Shellapi;
 
 namespace /***$rootnamespace$.***/ULibs.Win32
 {
-    public static class Shell32
+    internal static class Shell32
     {
         [DllImport("shell32.dll")]
-        public static extern IntPtr SHAppBarMessage(ABM msg, ref APPBARDATA data);
+        internal static extern IntPtr SHAppBarMessage(ABM msg, ref APPBARDATA data);
     }
 }

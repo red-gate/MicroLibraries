@@ -5,12 +5,12 @@ using ULibs.Win32.Windef;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct MINMAXINFO
+    internal struct MINMAXINFO
     {
-        public POINT ptReserved;
-        public POINT ptMaxSize;
-        public POINT ptMaxPosition;
-        public POINT ptMinTrackSize;
-        public POINT ptMaxTrackSize;
+        internal POINT ptReserved;
+        internal POINT ptMaxSize;
+        internal POINT ptMaxPosition;
+        internal POINT ptMinTrackSize;
+        internal POINT ptMaxTrackSize;
     }
 }

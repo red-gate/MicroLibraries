@@ -4,7 +4,7 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum SWP
+    internal enum SWP
     {
         ASYNCWINDOWPOS = 0x4000,
         DEFERERASE = 0x2000,

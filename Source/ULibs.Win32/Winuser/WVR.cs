@@ -8,7 +8,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/ms632634%28v=vs.85%29.aspx
     /// </summary>
     [Flags]
-    public enum WVR
+    internal enum WVR
     {
         ALIGNTOP = 0x0010,
         ALIGNLEFT = 0x0020,

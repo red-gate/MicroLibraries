@@ -5,13 +5,13 @@ using ULibs.Win32.Windef;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct WINDOWPLACEMENT
+    internal struct WINDOWPLACEMENT
     {
-        public int length;
-        public int flags;
-        public SW showCmd;
-        public POINT ptMinPosition;
-        public POINT ptMaxPosition;
-        public RECT rcNormalPosition;
+        internal int length;
+        internal int flags;
+        internal SW showCmd;
+        internal POINT ptMinPosition;
+        internal POINT ptMaxPosition;
+        internal RECT rcNormalPosition;
     }
 }

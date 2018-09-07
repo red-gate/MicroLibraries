@@ -5,21 +5,21 @@ using System.Runtime.InteropServices;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct CREATESTRUCT
+    internal struct CREATESTRUCT
     {
-        public IntPtr lpCreateParams;
-        public IntPtr hInstance;
-        public IntPtr hMenu;
-        public IntPtr hwndParent;
-        public int cy;
-        public int cx;
-        public int y;
-        public int x;
-        public WS style;
+        internal IntPtr lpCreateParams;
+        internal IntPtr hInstance;
+        internal IntPtr hMenu;
+        internal IntPtr hwndParent;
+        internal int cy;
+        internal int cx;
+        internal int y;
+        internal int x;
+        internal WS style;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string lpszName;
+        internal string lpszName;
         [MarshalAs(UnmanagedType.LPWStr)]
-        public string lpszClass;
-        public WS_EX dwExStyle;
+        internal string lpszClass;
+        internal WS_EX dwExStyle;
     }
 }

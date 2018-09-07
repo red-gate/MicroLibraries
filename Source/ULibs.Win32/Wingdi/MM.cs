@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Wingdi
 {
-    public enum MM
+    internal enum MM
     {
         TEXT = 1,
         LOMETRIC = 2,

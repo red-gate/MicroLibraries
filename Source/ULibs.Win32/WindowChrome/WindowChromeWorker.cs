@@ -21,14 +21,14 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
     /// created. You must then call WindowChromeWorker.WndProc with the messages from the message loop 
     /// so it can handle several of the window messages.
     /// </summary>
-    public class WindowChromeWorker
+    internal class WindowChromeWorker
     {
         /// <summary>
         /// This creates the WindowChromeWorker and attaches it to the window
         /// </summary>
         /// <param name="hwnd">The handle of the parent window</param>
         /// <returns></returns>
-        public static WindowChromeWorker Start(IntPtr hwnd)
+        internal static WindowChromeWorker Start(IntPtr hwnd)
         {
             var wcw = new WindowChromeWorker(hwnd);
             wcw.UpdateWindowRegion(hwnd);
@@ -49,7 +49,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// Show or hide the minimize box in the system menu and 
         /// add / remove them from the window style
         /// </summary>
-        public bool ShowMinimizeBox
+        internal bool ShowMinimizeBox
         {
             get { return m_ShowMinimizeBox; }
             set
@@ -63,7 +63,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// Show or hide the maximize box in the system menu and 
         /// add / remove them from the window style
         /// </summary>
-        public bool ShowMaximizeBox
+        internal bool ShowMaximizeBox
         {
             get { return m_ShowMaximizeBox; }
             set
@@ -76,7 +76,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// The width of sides of the glowing border around the window
         /// </summary>
-        public int GlowWidth
+        internal int GlowWidth
         {
             get { return m_WindowResizeBorders.GlowWidth; }
             set { m_WindowResizeBorders.GlowWidth = value; }
@@ -85,7 +85,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// The height of top and bottom of the glowing border around the window
         /// </summary>
-        public int GlowHeight
+        internal int GlowHeight
         {
             get { return m_WindowResizeBorders.GlowHeight; }
             set { m_WindowResizeBorders.GlowHeight = value; }
@@ -95,7 +95,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// The color of the border around the window when the window is the
         /// foreground window 
         /// </summary>
-        public COLORREF ActiveBorderColor
+        internal COLORREF ActiveBorderColor
         {
             get { return m_WindowResizeBorders.ActiveBorderColor; }
             set { m_WindowResizeBorders.ActiveBorderColor = value; }
@@ -105,7 +105,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// This controls how dark the glow effect is around the window when
         /// the window is the foreground window
         /// </summary>
-        public byte ActiveGlowAlpha
+        internal byte ActiveGlowAlpha
         {
             get { return m_WindowResizeBorders.ActiveGlowAlpha; }
             set { m_WindowResizeBorders.ActiveGlowAlpha = value; }
@@ -115,7 +115,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// The color of the border around the window when the window is not the
         /// foreground window 
         /// </summary>
-        public COLORREF InactiveBorderColor
+        internal COLORREF InactiveBorderColor
         {
             get { return m_WindowResizeBorders.InactiveBorderColor; }
             set { m_WindowResizeBorders.InactiveBorderColor = value; }
@@ -125,7 +125,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// This controls how dark the glow effect is around the window when
         /// the window is not the foreground window
         /// </summary>
-        public byte InactiveGlowAlpha
+        internal byte InactiveGlowAlpha
         {
             get { return m_WindowResizeBorders.InactiveGlowAlpha; }
             set { m_WindowResizeBorders.InactiveGlowAlpha = value; }
@@ -135,7 +135,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// The color of the glow around the window when the window is active
         /// </summary>
-        public COLORREF ActiveGlowColor
+        internal COLORREF ActiveGlowColor
         {
             get { return m_WindowResizeBorders.ActiveGlowColor; }
             set { m_WindowResizeBorders.ActiveGlowColor = value; }
@@ -144,7 +144,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// The color of the glow around teh window when the window is not active
         /// </summary>
-        public COLORREF InactiveGlowColor
+        internal COLORREF InactiveGlowColor
         {
             get { return m_WindowResizeBorders.InactiveGlowColor; }
             set { m_WindowResizeBorders.InactiveGlowColor = value; }
@@ -160,7 +160,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// </summary>
         /// <param name="x">x position to show the system menu in screen coordinates</param>
         /// <param name="y">y position to show the system menu in screen coordinates</param>
-        public void ShowSystemMenu(int x, int y)
+        internal void ShowSystemMenu(int x, int y)
         {
             if (m_Hwnd == IntPtr.Zero || !User32.IsWindow(m_Hwnd))
             {
@@ -183,7 +183,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// If the window is maximized this will restore the window to its normal size
         /// </summary>
-        public void Restore()
+        internal void Restore()
         {
             SendSystemCommand(SC.RESTORE);
         }
@@ -191,7 +191,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// Maximize the window
         /// </summary>
-        public void Maximize()
+        internal void Maximize()
         {
             SendSystemCommand(SC.MAXIMIZE);
         }
@@ -199,7 +199,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         /// Minimize the window
         /// </summary>
-        public void Minimize()
+        internal void Minimize()
         {
             SendSystemCommand(SC.MINIMIZE);
         }
@@ -208,7 +208,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// When somebody clicks on the title bar the can drag the location of the window around. To implement
         /// this call this method in the onmousedown event and it will let the user drag the window around.
         /// </summary>
-        public void MoveWindow()
+        internal void MoveWindow()
         {
             User32.ReleaseCapture();
             User32.SendMessage(m_Hwnd, WM.NCLBUTTONDOWN, new IntPtr((int)HitTest.HTCAPTION), IntPtr.Zero);
@@ -225,7 +225,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <param name="handled">True if you should send this message to the default 
         /// wndproc false if otherwise</param>
         /// <returns></returns>
-        public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, out bool handled)
+        internal IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, out bool handled)
         {
             switch (msg)
             {

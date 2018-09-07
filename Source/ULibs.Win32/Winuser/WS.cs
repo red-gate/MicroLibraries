@@ -4,7 +4,7 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum WS : uint
+    internal enum WS : uint
     {
         BORDER = 0x00800000,
         CAPTION = 0x00C00000,

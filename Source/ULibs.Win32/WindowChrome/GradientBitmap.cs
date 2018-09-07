@@ -14,9 +14,9 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
     {
         private IntPtr m_HBitmap;
 
-        public IntPtr Handle { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        internal IntPtr Handle { get; private set; }
+        internal int Width { get; private set; }
+        internal int Height { get; private set; }
 
         private GradientBitmap(IntPtr hwnd, IntPtr hBitmap, int width, int height)
         {
@@ -26,7 +26,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             Height = height;
         }
 
-        public static GradientBitmap Create(GradientBitmapDirection direction, int width, int height, COLORREF borderColor, COLORREF glowColor, byte alpha)
+        internal static GradientBitmap Create(GradientBitmapDirection direction, int width, int height, COLORREF borderColor, COLORREF glowColor, byte alpha)
         {
             // Create the bitmap to store the data in
             var hdcScreen = IntPtr.Zero;

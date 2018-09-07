@@ -5,13 +5,13 @@ using ULibs.Win32.Windef;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct MONITORINFOEX
+    internal struct MONITORINFOEX
     {
-        public int cbSize;
-        public RECT rcMonitor;
-        public RECT rcWork;
-        public int dwFlags;
+        internal int cbSize;
+        internal RECT rcMonitor;
+        internal RECT rcWork;
+        internal int dwFlags;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-        public byte[] szDevice;
+        internal byte[] szDevice;
     }
 }

@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Wingdi
 {
-    public enum BI
+    internal enum BI
     {
         RGB = 0x0000,
         RLE8 = 0x0001,

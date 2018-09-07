@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum OCR
+    internal enum OCR
     {
         APPSTARTING = 32650,
         NORMAL = 32512,

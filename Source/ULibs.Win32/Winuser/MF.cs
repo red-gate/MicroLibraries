@@ -4,7 +4,7 @@ using System;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum MF : uint
+    internal enum MF : uint
     {
         DOES_NOT_EXIST = unchecked((uint)-1),
 

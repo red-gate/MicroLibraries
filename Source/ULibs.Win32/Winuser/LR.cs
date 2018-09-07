@@ -4,7 +4,7 @@ using System;
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum LR
+    internal enum LR
     {
         CREATEDIBSECTION = 0x00002000,
         DEFAULTCOLOR = 0x00000000,

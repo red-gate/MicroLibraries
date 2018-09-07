@@ -5,14 +5,14 @@ using System.Runtime.InteropServices;
 namespace /***$rootnamespace$.***/ULibs.Win32.Windef
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct RECT : IEquatable<RECT>
+    internal struct RECT : IEquatable<RECT>
     {
-        public readonly int Left;
-        public readonly int Top;
-        public readonly int Right;
-        public readonly int Bottom;
+        internal readonly int Left;
+        internal readonly int Top;
+        internal readonly int Right;
+        internal readonly int Bottom;
 
-        public RECT(int left, int top, int right, int bottom)
+        internal RECT(int left, int top, int right, int bottom)
         {
             Left = left;
             Top = top;
@@ -20,15 +20,15 @@ namespace /***$rootnamespace$.***/ULibs.Win32.Windef
             Bottom = bottom;
         }
 
-        public int Width => Right - Left;
-        public int Height => Bottom - Top;
+        internal int Width => Right - Left;
+        internal int Height => Bottom - Top;
 
         public bool Equals(RECT other)
         {
             return Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
         }
 
-        public bool Contains(POINT vPoint)
+        internal bool Contains(POINT vPoint)
         {
             return vPoint.X >= Left
                    && vPoint.X <= Right

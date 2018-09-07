@@ -5,7 +5,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
     // ReSharper disable InconsistentNaming
-    public enum CS
+    internal enum CS
     {
         BYTEALIGNCLIENT = 0x1000,
         BYTEALIGNWINDOW = 0x2000,

@@ -6,13 +6,13 @@ using ULibs.Win32.Windef;
 namespace /***$rootnamespace$.***/ULibs.Win32.Shellapi
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct APPBARDATA
+    internal struct APPBARDATA
     {
-        public int cbSize;
-        public IntPtr hWnd;
-        public int uCallbackMessage;
-        public ABE uEdge;
-        public RECT rc;
-        public IntPtr lParam;
+        internal int cbSize;
+        internal IntPtr hWnd;
+        internal int uCallbackMessage;
+        internal ABE uEdge;
+        internal RECT rc;
+        internal IntPtr lParam;
     }
 }

@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum SC
+    internal enum SC
     {
         CLOSE = 0xF060,
         CONTEXTHELP = 0xF180,

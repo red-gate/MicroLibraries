@@ -4,11 +4,11 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Windef
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct COLORREF
+    internal struct COLORREF
     {
-        public byte R;
-        public byte G;
-        public byte B;
-        public byte A;
+        internal byte R;
+        internal byte G;
+        internal byte B;
+        internal byte A;
     }
 }

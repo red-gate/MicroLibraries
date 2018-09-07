@@ -4,24 +4,24 @@ using System.IO;
 namespace /***$rootnamespace$.***/ULibs.Win32.Fileapi
 {
     [Serializable]
-    public struct WIN32_FILE_ATTRIBUTE_DATA
+    internal struct WIN32_FILE_ATTRIBUTE_DATA
     {
-        public FileAttributes fileAttributes;
+        internal FileAttributes fileAttributes;
 
-        public uint ftCreationTimeLow;
+        internal uint ftCreationTimeLow;
 
-        public uint ftCreationTimeHigh;
+        internal uint ftCreationTimeHigh;
 
-        public uint ftLastAccessTimeLow;
+        internal uint ftLastAccessTimeLow;
 
-        public uint ftLastAccessTimeHigh;
+        internal uint ftLastAccessTimeHigh;
 
-        public uint ftLastWriteTimeLow;
+        internal uint ftLastWriteTimeLow;
 
-        public uint ftLastWriteTimeHigh;
+        internal uint ftLastWriteTimeHigh;
 
-        public int fileSizeHigh;
+        internal int fileSizeHigh;
 
-        public int fileSizeLow;
+        internal int fileSizeLow;
     }
 }

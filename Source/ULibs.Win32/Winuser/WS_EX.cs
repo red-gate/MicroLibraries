@@ -4,7 +4,7 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
     [Flags]
-    public enum WS_EX : uint
+    internal enum WS_EX : uint
     {
         None = 0,
 

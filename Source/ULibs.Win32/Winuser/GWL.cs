@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 namespace /***$rootnamespace$.***/ULibs.Win32.Winuser
 {
-    public enum GWL
+    internal enum GWL
     {
         EXSTYLE = -20,
         HINSTANCE = -6,

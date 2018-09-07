@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 namespace /***$rootnamespace$.***/ULibs.Win32.Windef
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct POINT : IEquatable<POINT>
+    internal struct POINT : IEquatable<POINT>
     {
-        public readonly int X;
-        public readonly int Y;
+        internal readonly int X;
+        internal readonly int Y;
 
-        public POINT(int x, int y)
+        internal POINT(int x, int y)
         {
             X = x;
             Y = y;

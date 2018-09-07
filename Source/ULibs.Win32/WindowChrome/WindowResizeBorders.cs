@@ -41,7 +41,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         private int m_GlowWidth;
         private int m_GlowHeight;
         
-        public int GlowWidth
+        internal int GlowWidth
         {
             get { return m_GlowWidth; }
             set
@@ -51,7 +51,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public int GlowHeight
+        internal int GlowHeight
         {
             get { return m_GlowHeight; }
             set
@@ -61,7 +61,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public COLORREF ActiveBorderColor
+        internal COLORREF ActiveBorderColor
         {
             get { return m_ActiveBorderColor; }
             set
@@ -71,7 +71,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public COLORREF ActiveGlowColor
+        internal COLORREF ActiveGlowColor
         {
             get { return m_ActiveGlowColor; }
             set
@@ -81,7 +81,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public byte ActiveGlowAlpha
+        internal byte ActiveGlowAlpha
         {
             get { return m_ActiveGlowAlpha; }
             set
@@ -91,7 +91,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public COLORREF InactiveBorderColor
+        internal COLORREF InactiveBorderColor
         {
             get { return m_InactiveBorderColor; }
             set
@@ -100,7 +100,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
                 RegenerateBorderStyle();
             }
         }
-        public COLORREF InactiveGlowColor
+        internal COLORREF InactiveGlowColor
         {
             get { return m_InactiveGlowColor; }
             set
@@ -110,7 +110,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public byte InactiveGlowAlpha
+        internal byte InactiveGlowAlpha
         {
             get { return m_InactiveGlowAlpha; }
             set
@@ -155,7 +155,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             InactiveGlowAlpha = 50;
         }
 
-        public static WindowResizeBorders Start(IntPtr hwnd)
+        internal static WindowResizeBorders Start(IntPtr hwnd)
         {
             var wcw = new WindowResizeBorders(hwnd);
 

@@ -173,7 +173,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         /// <summary>
         ///  Create the a new glow window
         /// </summary>
-        public static GlowWindow Create(IntPtr parentHandle, GlowWindowType glowWindowType)
+        internal static GlowWindow Create(IntPtr parentHandle, GlowWindowType glowWindowType)
         {
             // Make sure that we have created a window class for the window
             CreateWindowClassIfNeeded();
@@ -198,15 +198,15 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
         private readonly IntPtr m_Hwnd;
         private readonly GlowWindowType m_GlowWindowType;
 
-        public bool IsVisible => User32.IsWindowVisible(m_Hwnd);
+        internal bool IsVisible => User32.IsWindowVisible(m_Hwnd);
 
-        public GlowWindow(IntPtr hwnd, GlowWindowType glowWindowType)
+        internal GlowWindow(IntPtr hwnd, GlowWindowType glowWindowType)
         {
             m_Hwnd = hwnd;
             m_GlowWindowType = glowWindowType;
         }
 
-        public void Show()
+        internal void Show()
         {
             if (!IsVisible)
             {
@@ -214,7 +214,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public void Hide()
+        internal void Hide()
         {
             if (IsVisible)
             {
@@ -222,7 +222,7 @@ namespace /***$rootnamespace$.***/ULibs.Win32.WindowChrome
             }
         }
 
-        public void UpdateWindow(IBorderStyle borderStyle, RECT rect)
+        internal void UpdateWindow(IBorderStyle borderStyle, RECT rect)
         {
             int width = rect.Width, height = rect.Height;
 

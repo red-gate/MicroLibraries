@@ -4,11 +4,11 @@
 namespace /***$rootnamespace$.***/ULibs.Win32.Wingdi
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct RGBQUAD
+    internal struct RGBQUAD
     {
-        public byte rgbBlue;
-        public byte rgbGreen;
-        public byte rgbRed;
-        public byte rgbReserved;
+        internal byte rgbBlue;
+        internal byte rgbGreen;
+        internal byte rgbRed;
+        internal byte rgbReserved;
     }
 }
