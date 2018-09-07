@@ -1,1 +1,1 @@
-﻿Contains various Win32 imports. We typically use [PInvoke.net](https://pinvoke.net) to grab Win32 exports as needed, but this can result in the same structure being used in multiple places. The point of this library is to remove this duplication.
+﻿Contains various Win32 imports. We typically use [PInvoke.net](https://pinvoke.net) to grab Win32 exports as needed, but this helps us share the source without textual duplication.
