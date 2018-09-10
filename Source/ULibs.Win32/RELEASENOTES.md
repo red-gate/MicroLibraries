@@ -4,4 +4,4 @@
 
 ### Features
 
-- Initially set of Pinvoke.net definitions added.
+- Initial set of Pinvoke.net definitions added.
