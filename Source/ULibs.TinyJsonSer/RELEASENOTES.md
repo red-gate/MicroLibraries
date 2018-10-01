@@ -1,5 +1,11 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.4
+
+### Features
+
+- Supports being referenced with Package Reference
+
 ## 1.0.3
 
 ### Bug fixes

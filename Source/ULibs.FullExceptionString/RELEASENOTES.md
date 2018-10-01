@@ -1,5 +1,11 @@
 # ULibs.FullExceptionString release notes
 
+## 1.0.1
+
+### Features
+
+- Supports being referenced with Package Reference
+
 ## 1.0.0
 
 ### Features
