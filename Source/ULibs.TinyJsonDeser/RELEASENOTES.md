@@ -1,5 +1,11 @@
 # ULibs.TinyJsonDeser release notes
 
+## 1.0.2
+
+### Features
+
+- Supports being referenced with Package Reference
+
 ## 1.0.1
 
 ### Features
