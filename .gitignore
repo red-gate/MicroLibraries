@@ -8,9 +8,10 @@
 # Ignore Visual Studio cache/options folder.
 .vs/
 
-# Ignore ReSharper stuff.
+# Ignore JetBrains stuff.
 _ReSharper*/
 *.[Rr]e[Ss]harper
+.idea/
 
 # Ignore user-specific files.
 *.user

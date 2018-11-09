@@ -1,0 +1,1 @@
+﻿Provides a way to asynchronously apply an operation to each element in a sequence, whilst limiting the maximum number of concurrent operations.
