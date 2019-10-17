@@ -8,7 +8,7 @@ param(
     [string]$NuGetFeedApiKey
 )
 
-use 15.0 MSBuild
+Set-Alias msbuild (Resolve-MSBuild -MinimumVersion 15.0)
 
 # Useful paths used by multiple tasks.
 $RepositoryRoot = "$PsScriptRoot\.." | Resolve-Path
