@@ -20,3 +20,6 @@ _ReSharper*/
 
 # Ignore executables.
 *.exe
+
+# Ignore Jetbrains files
+**/.idea/*
