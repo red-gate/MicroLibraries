@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 /***using System.Diagnostics.CodeAnalysis;***/
 using System.Globalization;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <c>bool</c>, a <c>string</c>, a <c>double</c>, an <c>object[]</c>, an <c>IDictionary&lt;string, object&gt;</c>
         /// or <c>null</c>.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseValue(string json, out object output)
+        public bool TryParseValue(string json, out object? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -127,7 +128,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseString(string json, out string output)
+        public bool TryParseString(string json, [NotNullWhen(true)]out string? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -144,7 +145,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseArray(string json, out object[] output)
+        public bool TryParseArray(string json, out object?[]? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -161,7 +162,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseObject(string json, out IDictionary<string, object> output)
+        public bool TryParseObject(string json, out IDictionary<string, object?>? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -177,7 +178,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             while (offset < json.Length && char.IsWhiteSpace(json[offset])) offset++;
         }
 
-        private static bool TryParseValue(string json, ref int offset, out object output)
+        private static bool TryParseValue(string json, ref int offset, out object? output)
         {
             if (offset < json.Length)
             {
@@ -365,7 +366,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
         private static bool IsDigit(char ch) => ch >= '0' && ch <= '9';
 
-        private static bool TryParseString(string json, ref int offset, out string output)
+        private static bool TryParseString(string json, ref int offset, [NotNullWhen(true)]out string? output)
         {
             output = null;
             var index = offset;
@@ -480,7 +481,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         private static bool IsHexDigit(char ch) =>
             (ch >= '0' && ch <= '9') | (ch >= 'a' && ch <= 'f') | (ch >= 'A' && ch <= 'F');
 
-        private static bool TryParseArray(string json, ref int offset, out object[] output)
+        private static bool TryParseArray(string json, ref int offset, out object?[]? output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '[')
@@ -498,7 +499,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                         return true;
                     }
 
-                    var list = new List<object>();
+                    var list = new List<object?>();
 
                     SkipWhiteSpace(json, ref index);
                     if (TryParseValue(json, ref index, out var firstElement))
@@ -556,7 +557,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return false;
         }
 
-        private static bool TryParseObject(string json, ref int offset, out IDictionary<string, object> output)
+        private static bool TryParseObject(string json, ref int offset, out IDictionary<string, object?>? output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '{')
@@ -567,7 +568,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
                 if (index < json.Length)
                 {
-                    var map = new SortedDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+                    var map = new SortedDictionary<string, object?>(StringComparer.InvariantCultureIgnoreCase);
 
                     if (json[index] == '}')
                     {
@@ -634,7 +635,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         }
 
         private static bool TryParseObjectKeyValuePair(string json, ref int offset,
-                                                       out KeyValuePair<string, object> output)
+                                                       out KeyValuePair<string, object?> output)
         {
             var index = offset;
             if (TryParseString(json, ref index, out var key))
@@ -646,15 +647,32 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                     SkipWhiteSpace(json, ref index);
                     if (TryParseValue(json, ref index, out var value))
                     {
-                        output = new KeyValuePair<string, object>(key, value);
+                        output = new KeyValuePair<string, object?>(key, value);
                         offset = index;
                         return true;
                     }
                 }
             }
 
-            output = default(KeyValuePair<string, object>);
+            output = default;
             return false;
         }
+    }
+}
+
+namespace System.Diagnostics.CodeAnalysis
+{
+    /// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>
+    [AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
+    internal sealed class NotNullWhenAttribute : Attribute
+    {
+        /// <summary>Initializes the attribute with the specified return value condition.</summary>
+        /// <param name="returnValue">
+        /// The return value condition. If the method returns this value, the associated parameter will not be null.
+        /// </param>
+        internal NotNullWhenAttribute(bool returnValue) => ReturnValue = returnValue;
+
+        /// <summary>Gets the return value condition.</summary>
+        internal bool ReturnValue { get; }
     }
 }
