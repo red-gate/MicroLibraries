@@ -173,6 +173,7 @@ namespace Ulibs.Tests.TinyJsonDeser
         [TestCase("[12]", new object[] {12}, TestName = "Array with single element having multiple characters")]
         [TestCase("[1,2]", new object[] {1, 2}, TestName = "Array with multiple elements")]
         [TestCase("[ 1 , 2 ]", new object[] {1, 2}, TestName = "Array with multiple elements and internal whitespace")]
+        [TestCase("[null]", new object[] {null}, TestName = "Array with single null element")]
         [TestCase("[[1,2],[3,4]]", new object[] {new object[] {1, 2}, new object[] {3, 4}}, TestName = "Array with nested array elements")]
         public void TestTryParseArray_Sucess(string json, object[] expected)
         {
@@ -217,6 +218,9 @@ namespace Ulibs.Tests.TinyJsonDeser
             yield return new TestCaseData("{ \"abc\" : 123 }",
                                           new Dictionary<string, object> {["abc"] = 123})
                .SetName("Object with single key-value pair and internal whitespace");
+            yield return new TestCaseData("{\"abc\":null}",
+                                          new Dictionary<string, object> {["abc"] = null})
+               .SetName("Object with single key-value pair and null value");
             yield return new TestCaseData("{\"abc\":123,\"def\":4.5}",
                                           new Dictionary<string, object> {["abc"] = 123, ["def"] = 4.5})
                .SetName("Object with multiple key-value pairs");
@@ -249,6 +253,7 @@ namespace Ulibs.Tests.TinyJsonDeser
         [TestCase("{\"abc\":123,\"def\":4.5,}", TestName = "Missing first key-value pair")]
         [TestCase("{\"abc\":123,,\"def\":4.5}", TestName = "Missing middle key-value pair")]
         [TestCase("{\"abc\":123,\"ABC\":4.5}", TestName = "Duplicate keys")]
+        [TestCase("{null:123}", TestName = "Null key")]
         public void TestTryParseObject_Failed(string json)
         {
             Assert.That(new JsonDeserializer().TryParseObject(json, out var output), Is.False);
@@ -268,6 +273,8 @@ namespace Ulibs.Tests.TinyJsonDeser
             yield return new TestCaseData("1234.5", 1234.5).SetName("Number");
             yield return new TestCaseData("\"abc\"", "abc").SetName("String");
             yield return new TestCaseData("[12,34]", new object[] {12, 34}).SetName("Array");
+            yield return new TestCaseData("[null]", new object[] {null}).SetName("Array null");
+            yield return new TestCaseData("{\"abc\":null}", new Dictionary<string, object>{["abc"] = null}).SetName("Null value");
             yield return new TestCaseData("{\"abc\":123}", new Dictionary<string, object>{["abc"] = 123}).SetName("Object");
         }
 
