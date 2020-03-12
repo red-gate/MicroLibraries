@@ -202,8 +202,8 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
         {
             var properties = new List<KeyValuePair<string, object>>();
 
-            PropertyInfo keyInfo = null;
-            PropertyInfo valueInfo = null;
+            PropertyInfo? keyInfo = null;
+            PropertyInfo? valueInfo = null;
             foreach (var item in enumerable)
             {
                 if (keyInfo == null)
@@ -213,11 +213,10 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     valueInfo = type.GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
                 }
 
-                // ReSharper disable PossibleNullReferenceException
-                var key = keyInfo.GetValue(item).ToString();
-                var value = valueInfo.GetValue(item);
-                // ReSharper restore PossibleNullReferenceException
-                properties.Add(new KeyValuePair<string, object>(key, value));
+                var key = keyInfo?.GetValue(item).ToString();
+                var value = valueInfo?.GetValue(item);
+
+                properties.Add(new KeyValuePair<string, object>(key!, value!));
             }
 
             SerializeObjectProperties(properties, writeString, writeChar, indentLevel);
