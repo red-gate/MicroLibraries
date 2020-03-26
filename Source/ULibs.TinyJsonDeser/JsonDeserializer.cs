@@ -367,7 +367,6 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
         private static bool TryParseString(string json, ref int offset, out string output)
         {
-            output = NullString;
             var index = offset;
             if (index < json.Length && json[index] == '"')
             {
