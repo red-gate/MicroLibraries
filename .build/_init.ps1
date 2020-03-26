@@ -13,7 +13,7 @@ function global:Build
     [CmdletBinding()]
     param(
         [string[]] $Task = @('Default'),
-		[string] $Configuration = 'Release',
+        [string] $Configuration = 'Release',
         [string]$NuGetFeedUrl,
         [string]$NuGetFeedApiKey
     )

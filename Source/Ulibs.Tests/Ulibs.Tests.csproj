@@ -1,83 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DBEB3FFA-0B24-4207-8E18-9634BF8C86B8}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ulibs.Tests</RootNamespace>
-    <AssemblyName>Ulibs.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>netcoreapp3.1;net461</TargetFrameworks>
+    <Copyright>2018-2020</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="TeamCity.VSTest.TestAdapter" Version="1.0.20" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="FullExceptionString\ExtensionsTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ShellEscape\StringExtensionsTests.cs" />
-    <Compile Include="TinyJsonDeser\JsonDeserializerTests.cs" />
-    <Compile Include="TinyJsonSer\CustomDictionary.cs" />
-    <Compile Include="TinyJsonSer\CustomEnumerable.cs" />
-    <Compile Include="TinyJsonSer\CustomReadOnlyCollection.cs" />
-    <Compile Include="TinyJsonSer\CustomReadOnlyDictionary.cs" />
-    <Compile Include="TinyJsonSer\CustomReadOnlyList.cs" />
-    <Compile Include="TinyJsonSer\JsonSerializerTests.cs" />
+    <ProjectReference Include="..\ULibs.FullExceptionString\ULibs.FullExceptionString.csproj" />
+    <ProjectReference Include="..\ULibs.ShellEscape\ULibs.ShellEscape.csproj" />
+    <ProjectReference Include="..\ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj" />
+    <ProjectReference Include="..\ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ULibs.FullExceptionString\ULibs.FullExceptionString.csproj">
-      <Project>{40ea8064-a654-40d3-9849-9a0e52248de9}</Project>
-      <Name>ULibs.FullExceptionString</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ULibs.ShellEscape\ULibs.ShellEscape.csproj">
-      <Project>{fc0fa749-3a05-4a1d-bd43-f73473936dbe}</Project>
-      <Name>ULibs.ShellEscape</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj">
-      <Project>{f46791e7-5434-400b-b5b4-6659909c262e}</Project>
-      <Name>ULibs.TinyJsonDeser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj">
-      <Project>{3960af49-22de-489e-8348-35e32c605b4c}</Project>
-      <Name>ULibs.TinyJsonSer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  
 </Project>
