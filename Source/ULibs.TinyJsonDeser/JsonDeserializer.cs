@@ -145,7 +145,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseArray(string json, out object?[]? output)
+        public bool TryParseArray(string json, [NotNullWhen(true)] out object?[]? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -162,7 +162,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseObject(string json, out IDictionary<string, object?>? output)
+        public bool TryParseObject(string json, [NotNullWhen(true)] out IDictionary<string, object?>? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -481,7 +481,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         private static bool IsHexDigit(char ch) =>
             (ch >= '0' && ch <= '9') | (ch >= 'a' && ch <= 'f') | (ch >= 'A' && ch <= 'F');
 
-        private static bool TryParseArray(string json, ref int offset, out object?[]? output)
+        private static bool TryParseArray(string json, ref int offset, [NotNullWhen(true)] out object?[]? output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '[')
@@ -557,7 +557,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             return false;
         }
 
-        private static bool TryParseObject(string json, ref int offset, out IDictionary<string, object?>? output)
+        private static bool TryParseObject(string json, ref int offset, [NotNullWhen(true)] out IDictionary<string, object?>? output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '{')
