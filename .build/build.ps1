@@ -8,8 +8,6 @@ param(
     [string]$NuGetFeedApiKey
 )
 
-Set-Alias msbuild (Resolve-MSBuild -MinimumVersion 15.0)
-
 # Useful paths used by multiple tasks.
 $RepositoryRoot = "$PsScriptRoot\.." | Resolve-Path
 $SourceDir = "$RepositoryRoot\Source" | Resolve-Path
@@ -36,13 +34,7 @@ function Get-BranchName {
     # If the .git folder is present, try to get the current branch using Git.
     $DotGitDirPath = "$RepositoryRoot\.git"
     if (Test-Path $DotGitDirPath) {
-        Add-Type -Path ("$PsScriptRoot\packages\GitSharp\lib\GitSharp.dll" | Resolve-Path)
-        Add-Type -Path ("$PsScriptRoot\packages\SharpZipLib\lib\20\ICSharpCode.SharpZipLib.dll" | Resolve-Path)
-        Add-Type -Path ("$PsScriptRoot\packages\Tamir.SharpSSH\lib\Tamir.SharpSSH.dll" | Resolve-Path)
-        Add-Type -Path ("$PsScriptRoot\packages\Winterdom.IO.FileMap\lib\Winterdom.IO.FileMap.dll" | Resolve-Path)
-    
-        $Repository = New-Object 'GitSharp.Repository' $DotGitDirPath
-        return $Repository.CurrentBranch.Name
+        return git rev-parse --abbrev-ref HEAD
     }
 
     # Otherwise, assume 'dev'
@@ -61,45 +53,41 @@ task Clean {
     }
 }
 
+task Compile {
+    Write-Info "Running 'dotnet build'"
 
-# RestorePackages task, restores all the NuGet packages.
-task RestorePackages {
-    Write-Info "Restoring NuGet packages for solution $SolutionPath"
-
-    & $NuGetPath @('restore', $SolutionPath)
-}
-
-
-# Compile task, runs MSBuild to build the solution.
-task Compile  RestorePackages, {
-    Write-Info "Compiling solution $SolutionPath"
-
-    exec {
-        msbuild "$SolutionPath" /nodeReuse:False /target:Build /property:Configuration=Release
+    Push-Location -Path $SourceDir
+    try {
+        exec {
+            dotnet build 
+        }
+    } finally {
+        Pop-Location
     }
 }
 
 
-# Test task, runs the automated tests.
+# Test task, builds the solution and runs the automated tests.
 task Test  Compile, {
-    Write-Info 'Running tests'
+    Write-Info "Running 'dotnet test'"
 
-    $TestAssemblyPath = "$SourceDir\Ulibs.Tests\bin\$Configuration\ULibs.Tests.dll" | Resolve-Path
-    Invoke-NUnit3ForAssembly -AssemblyPath $TestAssemblyPath `
-                             -NUnitVersion '3.8.0' `
-                             -FrameworkVersion 'net-4.0' `
-                             -EnableCodeCoverage $True `
-                             -DotCoverFilters '+:ULibs.*;-:*.Tests' `
-                             -DotCoverAttributeFilters '*.ExcludeFromCodeCoverageAttribute'
-                                 
-    $CoverageResultsPath = "$TestAssemblyPath.TestResult.coverage.snap" | Resolve-Path
-    TeamCity-ImportDotNetCoverageResult 'dotcover' $CoverageResultsPath        
+    Push-Location -Path $SourceDir
+    try {
+        exec {
+            dotnet test
+        }
+    } finally {
+        Pop-Location
+    }
 }
 
 
 # Package task, generates NuGet packages for each micro-library.
 task Package {
     Write-Info 'Generating NuGet packages'
+
+    $BranchName = Get-BranchName
+    $IsDefaultBranch = $BranchName -eq 'master'
 
     # Loop through each project.
     Get-ChildItem $SourceDir -File -Filter '*.nuspec' -Recurse | ForEach-Object {
@@ -127,8 +115,6 @@ task Package {
         $Summary = if ($Description -match $Regex) { ($Description -split $Regex)[0] + '.' } else { $Description }
 
         # Establish NuGet package version.
-        $BranchName = Get-BranchName
-        $IsDefaultBranch = $BranchName -eq 'master'
         $NuGetPackageVersion = New-SemanticNuGetPackageVersion -Version $Version -BranchName $BranchName -IsDefaultBranch $IsDefaultBranch
 
         # Establish the file header.
