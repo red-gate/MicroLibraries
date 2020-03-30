@@ -1,6 +1,6 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
-/***using System.Diagnostics.CodeAnalysis;***/
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -60,7 +60,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <c>bool</c>, a <c>string</c>, a <c>double</c>, an <c>object[]</c>, an <c>IDictionary&lt;string, object&gt;</c>
         /// or <c>null</c>.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseValue(string json, out object output)
+        public bool TryParseValue(string json, out object? output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -144,7 +144,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseArray(string json, out object[] output)
+        public bool TryParseArray(string json, out object?[] output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -161,7 +161,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         /// <param name="json">The json string to parse.</param>
         /// <param name="output">If the parse succeeded, this will hold the parsed result.</param>
         /// <returns>Whether or not the parse attempt succeeded.</returns>
-        public bool TryParseObject(string json, out IDictionary<string, object> output)
+        public bool TryParseObject(string json, out IDictionary<string, object?> output)
         {
             if (json == null) throw new ArgumentNullException(nameof(json));
 
@@ -177,7 +177,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
             while (offset < json.Length && char.IsWhiteSpace(json[offset])) offset++;
         }
 
-        private static bool TryParseValue(string json, ref int offset, out object output)
+        private static bool TryParseValue(string json, ref int offset, out object? output)
         {
             if (offset < json.Length)
             {
@@ -367,7 +367,6 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
         private static bool TryParseString(string json, ref int offset, out string output)
         {
-            output = null;
             var index = offset;
             if (index < json.Length && json[index] == '"')
             {
@@ -392,14 +391,14 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                             }
                             else
                             {
-                                output = null;
+                                output = DefaultString;
                                 return false;
                             }
 
                             break;
 
                         case var ch when ch < ' ':
-                            output = null;
+                            output = DefaultString;
                             return false;
 
                         default:
@@ -409,7 +408,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                 }
             }
 
-            output = null;
+            output = DefaultString;
             return false;
         }
 
@@ -480,7 +479,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
         private static bool IsHexDigit(char ch) =>
             (ch >= '0' && ch <= '9') | (ch >= 'a' && ch <= 'f') | (ch >= 'A' && ch <= 'F');
 
-        private static bool TryParseArray(string json, ref int offset, out object[] output)
+        private static bool TryParseArray(string json, ref int offset, out object?[] output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '[')
@@ -498,7 +497,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                         return true;
                     }
 
-                    var list = new List<object>();
+                    var list = new List<object?>();
 
                     SkipWhiteSpace(json, ref index);
                     if (TryParseValue(json, ref index, out var firstElement))
@@ -507,7 +506,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                     }
                     else
                     {
-                        output = null;
+                        output = DefaultArray;
                         return false;
                     }
 
@@ -532,31 +531,31 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                                     }
                                     else
                                     {
-                                        output = null;
+                                        output = DefaultArray;
                                         return false;
                                     }
 
                                     break;
 
                                 default:
-                                    output = null;
+                                    output = DefaultArray;
                                     return false;
                             }
                         }
                         else
                         {
-                            output = null;
+                            output = DefaultArray;
                             return false;
                         }
                     }
                 }
             }
 
-            output = null;
+            output = DefaultArray;
             return false;
         }
 
-        private static bool TryParseObject(string json, ref int offset, out IDictionary<string, object> output)
+        private static bool TryParseObject(string json, ref int offset, out IDictionary<string, object?> output)
         {
             var index = offset;
             if (index < json.Length && json[index] == '{')
@@ -567,7 +566,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
 
                 if (index < json.Length)
                 {
-                    var map = new SortedDictionary<string, object>(StringComparer.InvariantCultureIgnoreCase);
+                    var map = new SortedDictionary<string, object?>(StringComparer.InvariantCultureIgnoreCase);
 
                     if (json[index] == '}')
                     {
@@ -583,7 +582,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                     }
                     else
                     {
-                        output = null;
+                        output = DefaultObject;
                         return false;
                     }
 
@@ -609,32 +608,32 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                                     }
                                     else
                                     {
-                                        output = null;
+                                        output = DefaultObject;
                                         return false;
                                     }
 
                                     break;
 
                                 default:
-                                    output = null;
+                                    output = DefaultObject;
                                     return false;
                             }
                         }
                         else
                         {
-                            output = null;
+                            output = DefaultObject;
                             return false;
                         }
                     }
                 }
             }
 
-            output = null;
+            output = DefaultObject;
             return false;
         }
 
         private static bool TryParseObjectKeyValuePair(string json, ref int offset,
-                                                       out KeyValuePair<string, object> output)
+                                                       out KeyValuePair<string, object?> output)
         {
             var index = offset;
             if (TryParseString(json, ref index, out var key))
@@ -646,15 +645,19 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonDeser
                     SkipWhiteSpace(json, ref index);
                     if (TryParseValue(json, ref index, out var value))
                     {
-                        output = new KeyValuePair<string, object>(key, value);
+                        output = new KeyValuePair<string, object?>(key, value);
                         offset = index;
                         return true;
                     }
                 }
             }
 
-            output = default(KeyValuePair<string, object>);
+            output = default;
             return false;
         }
+
+        private const string DefaultString = "";
+        private static IDictionary<string, object?> DefaultObject => new Dictionary<string, object?>();
+        private static readonly object?[] DefaultArray = new object?[0];
     }
 }
