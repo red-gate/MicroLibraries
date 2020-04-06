@@ -1,5 +1,11 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.5
+
+### Features
+
+- Supports C# 8.0 reference type nullability  
+
 ## 1.0.4
 
 ### Features
