@@ -1,5 +1,11 @@
 # ULibs.TinyJsonDeser release notes
 
+## 1.0.3
+
+### Features
+
+- Supports C# 8.0 reference type nullability  
+
 ## 1.0.2
 
 ### Features
