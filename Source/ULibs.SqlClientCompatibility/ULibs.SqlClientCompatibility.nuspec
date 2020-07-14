@@ -20,6 +20,6 @@
   </metadata>
   <files>
     <file src="*.pp" target="content\App_Packages\RedGate.ULibs.SqlClientCompatibility.$version$"/>
-    <file src="*.pp" target="contentFiles\cs\any\RedGate.ULibs.SqlClientCompatibility"/>
+    <file src="*.pp" target="contentFiles\cs\any"/>
   </files>
 </package>
