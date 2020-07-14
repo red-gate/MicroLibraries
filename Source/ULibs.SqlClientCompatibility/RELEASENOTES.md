@@ -4,4 +4,4 @@
 
 ### Features
 
-- TODO
+- Extension method AddTrustServerCertificateForCompatibility for SqlConnectionStringBuilder, DbConnectionStringBuilder, and connection string.
