@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ULibs.FullExceptionString\ULibs.FullExceptionString.csproj" />
     <ProjectReference Include="..\ULibs.ShellEscape\ULibs.ShellEscape.csproj" />
+    <ProjectReference Include="..\ULibs.SqlClientCompatibility\ULibs.SqlClientCompatibility.csproj" />
     <ProjectReference Include="..\ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj" />
     <ProjectReference Include="..\ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj" />
   </ItemGroup>
