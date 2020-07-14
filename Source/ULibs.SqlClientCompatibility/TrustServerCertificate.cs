@@ -1,9 +1,12 @@
 #nullable enable
 using System;
+using System.Data.Common;
+using System.Globalization;
 /***using System.Diagnostics.CodeAnalysis;***/
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.Data.SqlClient;
 
 namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 {
@@ -23,7 +26,145 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
-        internal static bool ShouldTrustServerCertificate(bool encrypt, bool isAzureAuth, string server)
+        internal static void AddTrustServerCertificateForCompatibility(this SqlConnectionStringBuilder builder)
+        {
+            var encrypt = builder.Encrypt;
+            var isAzureAuth = builder.Authentication != SqlAuthenticationMethod.NotSpecified &&
+                              builder.Authentication != SqlAuthenticationMethod.SqlPassword;
+            var server = builder.DataSource;
+
+            if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
+            {
+                builder.TrustServerCertificate = true;
+            }
+        }
+
+        /// <summary>
+        /// <para>
+        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
+        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
+        /// behaviour has changed to always verify the server certificate. This could be disruptive to
+        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
+        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
+        /// </para><para>
+        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
+        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
+        /// this should already be the case in 2020!
+        /// </para>
+        /// </summary>
+        internal static void AddTrustServerCertificateForCompatibility(this DbConnectionStringBuilder builder)
+        {
+            if (builder is SqlConnectionStringBuilder sqlBuilder)
+            {
+                AddTrustServerCertificateForCompatibility(sqlBuilder);
+            }
+            else
+            {
+                var encrypt = builder.EncryptIsSet();
+                var isAzureAuth = builder.IsAzureAuth();
+                var server = builder.GetServer();
+
+                if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
+                {
+                    if (builder.ContainsKey("Trust Server Certificate") ||
+                        builder.ContainsKey("trustservercertificate"))
+                    {
+                        // The connection string specified it explicitly; don't override
+                        return;
+                    }
+
+                    builder["Trust Server Certificate"] = "true";
+                }
+            }
+        }
+
+        /// <summary>
+        /// <para>
+        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
+        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
+        /// behaviour has changed to always verify the server certificate. This could be disruptive to
+        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
+        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
+        /// </para><para>
+        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
+        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
+        /// this should already be the case in 2020!
+        /// </para>
+        /// </summary>
+        internal static string AddTrustServerCertificateForCompatibility(this string connectionString)
+        {
+            var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
+            builder.AddTrustServerCertificateForCompatibility();
+            return builder.ConnectionString;
+        }
+
+        private static bool EncryptIsSet(this DbConnectionStringBuilder builder)
+        {
+            return builder.ContainsKey("Encrypt") && ConvertToBoolean(builder["Encrypt"]);
+        }
+
+        // Copied from DbConnectionStringBuilderUtil.ConvertToBoolean in Microsoft.Data.SqlClient
+        private static bool ConvertToBoolean(object value)
+        {
+            if (value is string svalue)
+            {
+                if (StringComparer.OrdinalIgnoreCase.Equals(svalue, "true") || StringComparer.OrdinalIgnoreCase.Equals(svalue, "yes"))
+                    return true;
+                else if (StringComparer.OrdinalIgnoreCase.Equals(svalue, "false") || StringComparer.OrdinalIgnoreCase.Equals(svalue, "no"))
+                    return false;
+                else
+                {
+                    string tmp = svalue.Trim();  // Remove leading & trailing white space.
+                    if (StringComparer.OrdinalIgnoreCase.Equals(tmp, "true") || StringComparer.OrdinalIgnoreCase.Equals(tmp, "yes"))
+                        return true;
+                    else if (StringComparer.OrdinalIgnoreCase.Equals(tmp, "false") || StringComparer.OrdinalIgnoreCase.Equals(tmp, "no"))
+                        return false;
+                }
+                return Boolean.Parse(svalue);
+            }
+
+            return ((IConvertible) value).ToBoolean(CultureInfo.InvariantCulture);
+        }
+
+        private static bool IsAzureAuth(this DbConnectionStringBuilder builder)
+        {
+            return builder.ContainsKey("Authentication") && IsAzureAuth(builder["Authentication"]);
+        }
+
+        private static bool IsAzureAuth(object authentication)
+        {
+            if (authentication == null) return false;
+            var authString = authentication.ToString();
+            if (authString == null) return false;
+            var withSpace = authString.IndexOf("active directory", StringComparison.OrdinalIgnoreCase);
+            var withoutSpace = authString.IndexOf("activedirectory", StringComparison.OrdinalIgnoreCase);
+            return withSpace >= 0 || withoutSpace >= 0;
+        }
+
+        private static string? GetServer(this DbConnectionStringBuilder builder)
+        {
+            if (builder.TryGetValue("Data Source", out var ds) && ds is string dss) return dss;
+            if (builder.TryGetValue("server", out var s) && s is string ss) return ss;
+            if (builder.TryGetValue("addr", out var a) && a is string @as) return @as;
+            if (builder.TryGetValue("address", out var ad) && ad is string ads) return ads;
+            if (builder.TryGetValue("network address", out var nad) && nad is string nads) return nads;
+            return null;
+        }
+
+        /// <summary>
+        /// <para>
+        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
+        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
+        /// behaviour has changed to always verify the server certificate. This could be disruptive to
+        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
+        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
+        /// </para><para>
+        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
+        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
+        /// this should already be the case in 2020!
+        /// </para>
+        /// </summary>
+        internal static bool ShouldTrustServerCertificate(bool encrypt, bool isAzureAuth, string? server)
         {
             if (encrypt)
             {
@@ -34,6 +175,11 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             if (isAzureAuth)
             {
                 // All connection to azure should have the certificate validated.
+                return false;
+            }
+
+            if (server == null)
+            {
                 return false;
             }
 
