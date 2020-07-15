@@ -1,0 +1,17 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!--
+    Note:  This targets file is needed for projects using WPF that have this package as a dependency.
+    Without this, the build will fail with a message saying the file cannot be found.
+    This seems to happen because during the WPF build a "shadow"/temp project is created which doesn't include the refernced source files from Nuget packages.
+    The below "injects" the file as one of the generated code files that get included in that project.
+    As the BeforeTargets below is unique to WPF builds, it shouldn't affect non WPF projects.
+-->
+  <PropertyGroup>
+    <SqlClientCompatibilityPackageVersion>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName($(MSBuildThisFileFullPath)))))))</SqlClientCompatibilityPackageVersion>
+  </PropertyGroup>
+  <Target Name="IncludeSqlClientCompatibilitySource" BeforeTargets="GenerateTemporaryTargetAssembly">
+    <ItemGroup>
+      <_GeneratedCodeFiles Include="$(IntermediateOutputPath)\NuGet\*\RedGate.ULibs.SqlClientCompatibility.Sources\$(SqlClientCompatibilityPackageVersion)\TrustServerCertificate.cs" />
+    </ItemGroup>
+  </Target>
+</Project>
