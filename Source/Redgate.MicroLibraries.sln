@@ -1,19 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.ShellEscape", "ULibs.ShellEscape\ULibs.ShellEscape.csproj", "{FC0FA749-3A05-4A1D-BD43-F73473936DBE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.UlibsProjectTemplate", "ULibs.UlibsProjectTemplate\ULibs.UlibsProjectTemplate.csproj", "{DA3C185C-135C-4EA6-A55D-98DE9E0EEA80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ulibs.Tests", "Ulibs.Tests\Ulibs.Tests.csproj", "{DBEB3FFA-0B24-4207-8E18-9634BF8C86B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ulibs.Tests", "Ulibs.Tests\Ulibs.Tests.csproj", "{DBEB3FFA-0B24-4207-8E18-9634BF8C86B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.TinyJsonSer", "ULibs.TinyJsonSer\ULibs.TinyJsonSer.csproj", "{3960AF49-22DE-489E-8348-35E32C605B4C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.FullExceptionString", "ULibs.FullExceptionString\ULibs.FullExceptionString.csproj", "{40EA8064-A654-40D3-9849-9A0E52248DE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ULibs.TinyJsonDeser", "ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj", "{F46791E7-5434-400B-B5B4-6659909C262E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.TinyJsonDeser", "ULibs.TinyJsonDeser\ULibs.TinyJsonDeser.csproj", "{F46791E7-5434-400B-B5B4-6659909C262E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ULibs.SqlClientCompatibility", "ULibs.SqlClientCompatibility\ULibs.SqlClientCompatibility.csproj", "{1C04E087-208C-40E3-A0D0-317D3C1D9271}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F46791E7-5434-400B-B5B4-6659909C262E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F46791E7-5434-400B-B5B4-6659909C262E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F46791E7-5434-400B-B5B4-6659909C262E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C04E087-208C-40E3-A0D0-317D3C1D9271}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C04E087-208C-40E3-A0D0-317D3C1D9271}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C04E087-208C-40E3-A0D0-317D3C1D9271}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C04E087-208C-40E3-A0D0-317D3C1D9271}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

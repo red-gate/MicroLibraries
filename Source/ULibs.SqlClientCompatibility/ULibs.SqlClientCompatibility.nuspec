@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!-- http://docs.nuget.org/docs/reference/nuspec-reference -->
+<package >
+  <metadata>
+    <id>RedGate.ULibs.SqlClientCompatibility.Sources</id>
+    <version>$version$</version>
+    <authors>red-gate</authors>
+    <owners>red-gate</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary><![CDATA[$summary$]]></summary>
+    <description><![CDATA[$description$]]></description>
+    <releaseNotes><![CDATA[$releaseNotes$]]></releaseNotes>
+    <copyright>Copyright $copyrightYear$ Red Gate Software Ltd</copyright>
+    <projectUrl>https://github.com/red-gate/MicroLibraries</projectUrl>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="Microsoft.Data.SqlClient" version="[2.0.0,)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="*.pp" target="content\App_Packages\RedGate.ULibs.SqlClientCompatibility.$version$" />
+    <file src="*.pp" target="contentFiles\cs\any" />
+    <file src="*.targets" target="build" />
+  </files>
+</package>
