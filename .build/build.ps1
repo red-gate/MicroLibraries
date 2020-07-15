@@ -87,7 +87,7 @@ task Package {
     Write-Info 'Generating NuGet packages'
 
     $BranchName = Get-BranchName
-    $IsDefaultBranch = $BranchName -eq 'master'
+    $IsDefaultBranch = $BranchName -eq 'main'
 
     # Loop through each project.
     Get-ChildItem $SourceDir -File -Filter '*.nuspec' -Recurse | ForEach-Object {
