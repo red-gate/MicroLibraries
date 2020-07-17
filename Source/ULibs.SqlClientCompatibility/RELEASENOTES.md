@@ -3,7 +3,7 @@
 ## 0.1.1
 
 ### Features
-- If the SMARTASSEMBLY compile constant is set, DoNotCapture attribute will be applied to the connectionString parameter.
+- If the SMARTASSEMBLY compile constant is set, DoNotCaptureVariables attribute will be applied methods that process connection strings.
 
 ## 0.1.0
 
