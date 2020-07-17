@@ -7,6 +7,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Data.SqlClient;
+#if SMARTASSEMBLY
+using SmartAssembly.Attributes;
+#endif
 
 namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 {
@@ -91,7 +94,11 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
-        internal static string AddTrustServerCertificateForCompatibility(this string connectionString)
+        internal static string AddTrustServerCertificateForCompatibility(
+#if SMARTASSEMBLY
+[DoNotCapture]
+#endif
+            this string connectionString)
         {
             var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
             builder.AddTrustServerCertificateForCompatibility();
