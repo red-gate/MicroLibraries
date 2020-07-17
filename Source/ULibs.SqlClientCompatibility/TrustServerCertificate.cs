@@ -7,6 +7,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Data.SqlClient;
+#if SMARTASSEMBLY
+using SmartAssembly.Attributes;
+#endif
 
 namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 {
@@ -26,6 +29,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         internal static void AddTrustServerCertificateForCompatibility(this SqlConnectionStringBuilder builder)
         {
             var encrypt = builder.Encrypt;
@@ -52,6 +58,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         internal static void AddTrustServerCertificateForCompatibility(this DbConnectionStringBuilder builder)
         {
             if (builder is SqlConnectionStringBuilder sqlBuilder)
@@ -91,6 +100,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         internal static string AddTrustServerCertificateForCompatibility(this string connectionString)
         {
             var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
@@ -98,6 +110,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return builder.ConnectionString;
         }
 
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static bool EncryptIsSet(this DbConnectionStringBuilder builder)
         {
             return builder.ContainsKey("Encrypt") && ConvertToBoolean(builder["Encrypt"]);
@@ -126,6 +141,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return ((IConvertible) value).ToBoolean(CultureInfo.InvariantCulture);
         }
 
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static bool IsAzureAuth(this DbConnectionStringBuilder builder)
         {
             return builder.ContainsKey("Authentication") && IsAzureAuth(builder["Authentication"]);
@@ -141,6 +159,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return withSpace >= 0 || withoutSpace >= 0;
         }
 
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static string? GetServer(this DbConnectionStringBuilder builder)
         {
             if (builder.TryGetValue("Data Source", out var ds) && ds is string dss) return dss;
