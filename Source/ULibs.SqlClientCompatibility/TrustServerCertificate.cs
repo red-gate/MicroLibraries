@@ -32,7 +32,7 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
-        internal static void AddTrustServerCertificateForCompatibility(this SqlConnectionStringBuilder builder)
+        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this SqlConnectionStringBuilder builder)
         {
             var encrypt = builder.Encrypt;
             var isAzureAuth = builder.Authentication != SqlAuthenticationMethod.NotSpecified &&
@@ -61,11 +61,11 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
-        internal static void AddTrustServerCertificateForCompatibility(this DbConnectionStringBuilder builder)
+        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this DbConnectionStringBuilder builder)
         {
             if (builder is SqlConnectionStringBuilder sqlBuilder)
             {
-                AddTrustServerCertificateForCompatibility(sqlBuilder);
+                SetBackwardsCompatibleTrustServerCertificateValue(sqlBuilder);
             }
             else
             {
@@ -103,10 +103,10 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
-        internal static string AddTrustServerCertificateForCompatibility(this string connectionString)
+        internal static string SetBackwardsCompatibleTrustServerCertificateValue(this string connectionString)
         {
             var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
-            builder.AddTrustServerCertificateForCompatibility();
+            builder.SetBackwardsCompatibleTrustServerCertificateValue();
             return builder.ConnectionString;
         }
 
