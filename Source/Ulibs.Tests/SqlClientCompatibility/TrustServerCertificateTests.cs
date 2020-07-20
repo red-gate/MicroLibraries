@@ -53,7 +53,7 @@ namespace Ulibs.Tests.SqlClientCompatibility
                 Encrypt = encrypt,
                 Authentication = auth
             };
-            builder.AddTrustServerCertificateForCompatibility();
+            builder.SetBackwardsCompatibleTrustServerCertificateValue();
             return builder.TrustServerCertificate;
         }
 
@@ -95,7 +95,7 @@ namespace Ulibs.Tests.SqlClientCompatibility
                 builder["Authentication"] = auth;
             }
 
-            builder.AddTrustServerCertificateForCompatibility();
+            builder.SetBackwardsCompatibleTrustServerCertificateValue();
             return new SqlConnectionStringBuilder(builder.ConnectionString).TrustServerCertificate;
         }
 
@@ -107,7 +107,7 @@ namespace Ulibs.Tests.SqlClientCompatibility
         [TestCase("Server=localhost;encrypt=yes", "Server=localhost;encrypt=yes")]
         public void AddTrustServerCertificateForCompatibility(string input, string expected)
         {
-            var actual = input.AddTrustServerCertificateForCompatibility();
+            var actual = input.SetBackwardsCompatibleTrustServerCertificateValue();
             Assert.That(actual, Is.EqualTo(expected).IgnoreCase);
         }
     }
