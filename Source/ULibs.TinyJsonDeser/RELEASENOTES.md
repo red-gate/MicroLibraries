@@ -1,5 +1,11 @@
 # ULibs.TinyJsonDeser release notes
 
+## 1.0.4
+
+### Features
+
+- Changes code to match our American English policy
+
 ## 1.0.3
 
 ### Features
@@ -22,4 +28,4 @@
 
 ### Features
 
-- A lightweight thread-safe JsonDeserializer class that can deserialise json text to .NET types. It does not support binding to specific .NET types. Rather, objects are deserialised to instances of `IDictionary<string, object>`, arrays are deserialised to instances of `object[]`, and literals are deserialised to either a `bool`, `double`, `string` or `null`.
+- A lightweight thread-safe JsonDeserializer class that can deserialize json text to .NET types. It does not support binding to specific .NET types. Rather, objects are deserialized to instances of `IDictionary<string, object>`, arrays are deserialized to instances of `object[]`, and literals are deserialized to either a `bool`, `double`, `string` or `null`.

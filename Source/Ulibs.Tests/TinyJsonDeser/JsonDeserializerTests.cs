@@ -285,10 +285,10 @@ namespace Ulibs.Tests.TinyJsonDeser
             Assert.That(output, Is.EqualTo(expected));
         }
 
-        [TestCase("moomin", TestName = "Unrecognised literal")]
-        [TestCase("troo", TestName = "Unrecognised true literal")]
-        [TestCase("faltz", TestName = "Unrecognised false literal")]
-        [TestCase("nuul", TestName = "Unrecognised null literal")]
+        [TestCase("moomin", TestName = "Unrecognized literal")]
+        [TestCase("troo", TestName = "Unrecognized true literal")]
+        [TestCase("faltz", TestName = "Unrecognized false literal")]
+        [TestCase("nuul", TestName = "Unrecognized null literal")]
         public void TestTryParseValue_Failed(string json)
         {
             Assert.That(new JsonDeserializer().TryParseValue(json, out var output), Is.False);
