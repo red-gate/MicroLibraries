@@ -102,7 +102,7 @@ namespace Ulibs.Tests.FullExceptionString
 
         #endregion
 
-        private static string NormaliseFormatting(string input) =>
+        private static string NormalizeFormatting(string input) =>
             string.Join(
                 Environment.NewLine,
                 input.Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)
@@ -128,8 +128,8 @@ namespace Ulibs.Tests.FullExceptionString
 
             var fullExceptionString = exception.ToFullExceptionString();
 
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Is.EqualTo(NormaliseFormatting(exception.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Is.EqualTo(NormalizeFormatting(exception.ToString())));
         }
 
         [Test]
@@ -141,8 +141,8 @@ namespace Ulibs.Tests.FullExceptionString
             builder.AppendFullExceptionString(exception);
             var fullExceptionString = builder.ToString();
 
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Is.EqualTo(NormaliseFormatting(exception.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Is.EqualTo(NormalizeFormatting(exception.ToString())));
         }
 
         [Test]
@@ -155,8 +155,8 @@ namespace Ulibs.Tests.FullExceptionString
             var fullExceptionString = writer.ToString();
             writer.Dispose();
 
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Is.EqualTo(NormaliseFormatting(exception.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Is.EqualTo(NormalizeFormatting(exception.ToString())));
         }
 
         [Test]
@@ -168,8 +168,8 @@ namespace Ulibs.Tests.FullExceptionString
             var fullExceptionString = outerException.ToFullExceptionString();
 
             Assert.That(fullExceptionString, Contains.Substring("Caused by:"));
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Contains.Substring(NormaliseFormatting(innerException.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Contains.Substring(NormalizeFormatting(innerException.ToString())));
         }
 
         [Test]
@@ -182,10 +182,10 @@ namespace Ulibs.Tests.FullExceptionString
             var fullExceptionString = outerException.ToFullExceptionString();
 
             Assert.That(fullExceptionString, Contains.Substring("Contains exceptions:"));
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Contains.Substring(NormaliseFormatting(firstChildException.ToString())));
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Contains.Substring(NormaliseFormatting(secondChildException.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Contains.Substring(NormalizeFormatting(firstChildException.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Contains.Substring(NormalizeFormatting(secondChildException.ToString())));
         }
 
         [Test]
@@ -198,10 +198,10 @@ namespace Ulibs.Tests.FullExceptionString
             var fullExceptionString = outerException.ToFullExceptionString();
 
             Assert.That(fullExceptionString, Contains.Substring("Loader exceptions:"));
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Contains.Substring(NormaliseFormatting(firstChildException.ToString())));
-            Assert.That(NormaliseFormatting(fullExceptionString),
-                        Contains.Substring(NormaliseFormatting(secondChildException.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Contains.Substring(NormalizeFormatting(firstChildException.ToString())));
+            Assert.That(NormalizeFormatting(fullExceptionString),
+                        Contains.Substring(NormalizeFormatting(secondChildException.ToString())));
         }
     }
 }

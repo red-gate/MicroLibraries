@@ -24,7 +24,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
     internal sealed class JsonSerializer
     {
         private readonly IReadOnlyDictionary<Type, Action<object, Action<string>, Action<char>>> _basicHandlers;
-        private readonly IReadOnlyDictionary<TypeCode, Action<object, Action<string>, Action<char>>> _unrecognisedEnumTypeHandlers;
+        private readonly IReadOnlyDictionary<TypeCode, Action<object, Action<string>, Action<char>>> _unrecognizedEnumTypeHandlers;
         private readonly bool _indented;
         private readonly string _keyValueSeparator;
         private string[] _indents = new string[0];
@@ -58,7 +58,7 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
                     [typeof(DateTimeOffset)] = SerializeDateTimeOffset,
                     [typeof(Guid)] = SerializeGuid,
                 };
-            _unrecognisedEnumTypeHandlers = new Dictionary<TypeCode, Action<object, Action<string>, Action<char>>>
+            _unrecognizedEnumTypeHandlers = new Dictionary<TypeCode, Action<object, Action<string>, Action<char>>>
             {
                 [TypeCode.Byte] = _basicHandlers[typeof(byte)],
                 [TypeCode.SByte] = _basicHandlers[typeof(sbyte)],
@@ -375,14 +375,14 @@ namespace /***$rootnamespace$.***/ULibs.TinyJsonSer
             }
             else
             {
-                SerializeUnrecognisedEnumValue(target, writeString, writeChar);
+                SerializeUnrecognizedEnumValue(target, writeString, writeChar);
             }
         }
 
-        private void SerializeUnrecognisedEnumValue(object target, Action<string> writeString, Action<char> writeChar)
+        private void SerializeUnrecognizedEnumValue(object target, Action<string> writeString, Action<char> writeChar)
         {
             var value = (Enum) target;
-            var handler = _unrecognisedEnumTypeHandlers[value.GetTypeCode()];
+            var handler = _unrecognizedEnumTypeHandlers[value.GetTypeCode()];
             handler(target, writeString, writeChar);
         }
 
