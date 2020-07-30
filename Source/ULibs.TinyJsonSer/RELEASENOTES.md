@@ -1,5 +1,11 @@
 # ULibs.TinyJsonSer release notes
 
+## 1.0.6
+
+### Features
+
+- Changes code to match our American English policy  
+
 ## 1.0.5
 
 ### Features
