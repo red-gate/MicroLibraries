@@ -21,6 +21,5 @@
   <files>
     <file src="*.pp" target="content\App_Packages\RedGate.ULibs.SqlClientCompatibility.$version$" />
     <file src="*.pp" target="contentFiles\cs\any" />
-    <file src="*.targets" target="build" />
   </files>
 </package>

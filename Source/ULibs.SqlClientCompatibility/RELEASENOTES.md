@@ -1,5 +1,10 @@
 # ULibs.SqlClientCompatibility release notes
 
+## 1.0.1
+
+### Fixes
+- Removed workaround for an MSBuild bug with WPF projects that appears to no longer be needed
+
 ## 1.0.0
 
 ### Features
