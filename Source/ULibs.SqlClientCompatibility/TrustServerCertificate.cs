@@ -32,58 +32,26 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
-        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this SqlConnectionStringBuilder builder)
+        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this DbConnectionStringBuilder builder)
         {
-            var encrypt = builder.Encrypt;
-            var isAzureAuth = builder.Authentication != SqlAuthenticationMethod.NotSpecified &&
-                              builder.Authentication != SqlAuthenticationMethod.SqlPassword;
-            var server = builder.DataSource;
+            // SqlConnectionStringBuilder overrides ContainsKey and [] so we always get back true
+            // and the default value, so we can't tell whether keys were explicitly specified. By
+            // inspecting the connection string itself, we can tell whether key are actually set.
+            var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
+            var encrypt = cleanBuilder.EncryptIsSet();
+            var isAzureAuth = cleanBuilder.IsAzureAuth();
+            var server = cleanBuilder.GetServer();
 
             if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
             {
-                builder.TrustServerCertificate = true;
-            }
-        }
-
-        /// <summary>
-        /// <para>
-        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
-        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
-        /// behaviour has changed to always verify the server certificate. This could be disruptive to
-        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
-        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
-        /// </para><para>
-        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
-        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
-        /// this should already be the case in 2020!
-        /// </para>
-        /// </summary>
-#if SMARTASSEMBLY
-[DoNotCaptureVariables]
-#endif
-        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this DbConnectionStringBuilder builder)
-        {
-            if (builder is SqlConnectionStringBuilder sqlBuilder)
-            {
-                SetBackwardsCompatibleTrustServerCertificateValue(sqlBuilder);
-            }
-            else
-            {
-                var encrypt = builder.EncryptIsSet();
-                var isAzureAuth = builder.IsAzureAuth();
-                var server = builder.GetServer();
-
-                if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
+                if (cleanBuilder.ContainsKey("Trust Server Certificate") ||
+                    cleanBuilder.ContainsKey("trustservercertificate"))
                 {
-                    if (builder.ContainsKey("Trust Server Certificate") ||
-                        builder.ContainsKey("trustservercertificate"))
-                    {
-                        // The connection string specified it explicitly; don't override
-                        return;
-                    }
-
-                    builder["Trust Server Certificate"] = "true";
+                    // The connection string specified it explicitly; don't override
+                    return;
                 }
+
+                builder["Trust Server Certificate"] = "true";
             }
         }
 
