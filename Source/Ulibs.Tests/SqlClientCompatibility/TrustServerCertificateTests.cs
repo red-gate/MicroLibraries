@@ -39,20 +39,31 @@ namespace Ulibs.Tests.SqlClientCompatibility
         [TestCase(false, SqlAuthenticationMethod.ActiveDirectoryInteractive, "(local)", ExpectedResult = false)]
         [TestCase(false, SqlAuthenticationMethod.ActiveDirectoryPassword, "(local)", ExpectedResult = false)]
         [TestCase(false, SqlAuthenticationMethod.ActiveDirectoryServicePrincipal, "(local)", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.ActiveDirectoryIntegrated, "(local)", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.ActiveDirectoryInteractive, "(local)", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.ActiveDirectoryPassword, "(local)", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.ActiveDirectoryServicePrincipal, "(local)", ExpectedResult = false)]
         // Don't trust: not on LAN
         [TestCase(false, SqlAuthenticationMethod.NotSpecified, "example.com", ExpectedResult = false)]
         [TestCase(false, SqlAuthenticationMethod.SqlPassword, "example.com", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.NotSpecified, "example.com", ExpectedResult = false)]
+        [TestCase(null, SqlAuthenticationMethod.SqlPassword, "example.com", ExpectedResult = false)]
         // Do trust: on LAN
         [TestCase(false, SqlAuthenticationMethod.NotSpecified, "(local)", ExpectedResult = true)]
         [TestCase(false, SqlAuthenticationMethod.SqlPassword, "(local)", ExpectedResult = true)]
-        public bool AddShouldTrustServerCertificateToSqlConnectionStringBuilder(bool encrypt, SqlAuthenticationMethod auth, string server)
+        [TestCase(null, SqlAuthenticationMethod.NotSpecified, "(local)", ExpectedResult = true)]
+        [TestCase(null, SqlAuthenticationMethod.SqlPassword, "(local)", ExpectedResult = true)]
+        public bool AddShouldTrustServerCertificateToSqlConnectionStringBuilder(bool? encrypt, SqlAuthenticationMethod auth, string server)
         {
             var builder = new SqlConnectionStringBuilder
             {
                 DataSource = server,
-                Encrypt = encrypt,
                 Authentication = auth
             };
+            if (encrypt.HasValue)
+            {
+                builder.Encrypt = encrypt.Value;
+            }
             builder.SetBackwardsCompatibleTrustServerCertificateValue();
             return builder.TrustServerCertificate;
         }
