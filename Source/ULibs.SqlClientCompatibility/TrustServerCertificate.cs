@@ -40,7 +40,14 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
             if (ShouldTrustServerCertificate(cleanBuilder))
             {
-                builder["Trust Server Certificate"] = "true";
+                if (builder is SqlConnectionStringBuilder sqlBuilder)
+                {
+                    sqlBuilder.TrustServerCertificate = true;
+                }
+                else
+                {
+                    builder["Trust Server Certificate"] = "true";
+                }
             }
         }
 
