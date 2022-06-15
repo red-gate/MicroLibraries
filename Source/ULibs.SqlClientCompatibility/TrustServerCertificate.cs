@@ -150,6 +150,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return null;
         }
 
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static bool ShouldTrustServerCertificate(DbConnectionStringBuilder builder)
         {
             var encrypt = builder.EncryptIsSet();
