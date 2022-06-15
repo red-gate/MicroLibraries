@@ -163,20 +163,10 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return ShouldTrustServerCertificate(encrypt, isAzureAuth, trustServerCertificateAlreadySpecified, server);
         }
 
-        /// <summary>
-        /// <para>
-        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
-        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
-        /// behaviour has changed to always verify the server certificate. This could be disruptive to
-        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
-        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
-        /// </para><para>
-        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
-        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
-        /// this should already be the case in 2020!
-        /// </para>
-        /// </summary>
-        internal static bool ShouldTrustServerCertificate(
+        // This is internal so that it can be seen by the tests, but as it's a microlibrary,
+        // internal is effectively public, and this shouldn't be on the public interface.
+        /***private //***/internal
+            static bool ShouldTrustServerCertificate(
             bool encrypt,
             bool isAzureAuth,
             bool trustServerCertificateAlreadySpecified,
