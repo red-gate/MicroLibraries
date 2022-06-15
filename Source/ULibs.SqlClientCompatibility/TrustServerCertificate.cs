@@ -62,8 +62,13 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #endif
         internal static string SetBackwardsCompatibleTrustServerCertificateValue(this string connectionString)
         {
-            var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
-            builder.SetBackwardsCompatibleTrustServerCertificateValue();
+            var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
+
+            if (ShouldTrustServerCertificate(builder))
+            {
+                builder["Trust Server Certificate"] = "true";
+            }
+
             return builder.ConnectionString;
         }
 
