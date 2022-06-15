@@ -38,12 +38,7 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             // and the default value, so we can't tell whether keys were explicitly specified. By
             // inspecting the connection string itself, we can tell whether key are actually set.
             var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
-            var encrypt = cleanBuilder.EncryptIsSet();
-            var isAzureAuth = cleanBuilder.IsAzureAuth();
-            var server = cleanBuilder.GetServer();
-            var trustServerCertificateAlreadySpecified = cleanBuilder.IsTrustServerCertificateAlreadySpecified();
-
-            if (ShouldTrustServerCertificate(encrypt, isAzureAuth, trustServerCertificateAlreadySpecified, server))
+            if (ShouldTrustServerCertificate(cleanBuilder))
             {
                 builder["Trust Server Certificate"] = "true";
             }
@@ -141,6 +136,16 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             if (builder.TryGetValue("address", out var ad) && ad is string ads) return ads;
             if (builder.TryGetValue("network address", out var nad) && nad is string nads) return nads;
             return null;
+        }
+
+        private static bool ShouldTrustServerCertificate(DbConnectionStringBuilder builder)
+        {
+            var encrypt = builder.EncryptIsSet();
+            var isAzureAuth = builder.IsAzureAuth();
+            var server = builder.GetServer();
+            var trustServerCertificateAlreadySpecified = builder.IsTrustServerCertificateAlreadySpecified();
+
+            return ShouldTrustServerCertificate(encrypt, isAzureAuth, trustServerCertificateAlreadySpecified, server);
         }
 
         /// <summary>
