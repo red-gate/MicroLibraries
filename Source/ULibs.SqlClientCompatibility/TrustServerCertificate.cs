@@ -41,16 +41,10 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             var encrypt = cleanBuilder.EncryptIsSet();
             var isAzureAuth = cleanBuilder.IsAzureAuth();
             var server = cleanBuilder.GetServer();
+            var trustServerCertificateAlreadySpecified = cleanBuilder.IsTrustServerCertificateAlreadySpecified();
 
-            if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
+            if (ShouldTrustServerCertificate(encrypt, isAzureAuth, trustServerCertificateAlreadySpecified, server))
             {
-                if (cleanBuilder.ContainsKey("Trust Server Certificate") ||
-                    cleanBuilder.ContainsKey("trustservercertificate"))
-                {
-                    // The connection string specified it explicitly; don't override
-                    return;
-                }
-
                 builder["Trust Server Certificate"] = "true";
             }
         }
@@ -130,6 +124,15 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
+        private static bool IsTrustServerCertificateAlreadySpecified(this DbConnectionStringBuilder builder)
+        {
+            return builder.ContainsKey("Trust Server Certificate") ||
+                   builder.ContainsKey("trustservercertificate");
+        }
+
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static string? GetServer(this DbConnectionStringBuilder builder)
         {
             if (builder.TryGetValue("Data Source", out var ds) && ds is string dss) return dss;
@@ -153,7 +156,11 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
         /// this should already be the case in 2020!
         /// </para>
         /// </summary>
-        internal static bool ShouldTrustServerCertificate(bool encrypt, bool isAzureAuth, string? server)
+        internal static bool ShouldTrustServerCertificate(
+            bool encrypt,
+            bool isAzureAuth,
+            bool trustServerCertificateAlreadySpecified,
+            string? server)
         {
             if (encrypt)
             {
@@ -164,6 +171,12 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             if (isAzureAuth)
             {
                 // All connection to azure should have the certificate validated.
+                return false;
+            }
+
+            if (trustServerCertificateAlreadySpecified)
+            {
+                // If the Trust Server Certificate property is already explicitly specified, we shouldn't override it.
                 return false;
             }
 
