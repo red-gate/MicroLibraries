@@ -34,9 +34,9 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #endif
         internal static void SetBackwardsCompatibleTrustServerCertificateValue(this DbConnectionStringBuilder builder)
         {
-            // SqlConnectionStringBuilder overrides ContainsKey and [] so we always get back true
-            // and the default value, so we can't tell whether keys were explicitly specified. By
-            // inspecting the connection string itself, we can tell whether key are actually set.
+            // SqlConnectionStringBuilder overrides ContainsKey and [], so we always get back true and
+            // the default value respectively, so we can't tell whether keys were explicitly specified.
+            // By inspecting the connection string itself, we can tell whether keys are actually set.
             var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
             if (ShouldTrustServerCertificate(cleanBuilder))
             {
