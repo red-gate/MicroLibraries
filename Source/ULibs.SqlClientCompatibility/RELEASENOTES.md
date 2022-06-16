@@ -1,5 +1,11 @@
 # ULibs.SqlClientCompatibility release notes
 
+## 1.0.2
+
+### Fixes
+- Fixed SetBackwardsCompatibleTrustServerCertificateValue when a SqlConnectionStringBuilder from Microsoft.Data.SqlClient v4+ is passed in
+- Removed ShouldTrustServerCertificate from the public API, as it wasn't intended to be exposed and isn't used externally anywhere
+
 ## 1.0.1
 
 ### Fixes
