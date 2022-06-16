@@ -32,56 +32,20 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
-        internal static void SetBackwardsCompatibleTrustServerCertificateValue(this SqlConnectionStringBuilder builder)
-        {
-            var encrypt = builder.Encrypt;
-            var isAzureAuth = builder.Authentication != SqlAuthenticationMethod.NotSpecified &&
-                              builder.Authentication != SqlAuthenticationMethod.SqlPassword;
-            var server = builder.DataSource;
-
-            if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
-            {
-                builder.TrustServerCertificate = true;
-            }
-        }
-
-        /// <summary>
-        /// <para>
-        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
-        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
-        /// behaviour has changed to always verify the server certificate. This could be disruptive to
-        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
-        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
-        /// </para><para>
-        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
-        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
-        /// this should already be the case in 2020!
-        /// </para>
-        /// </summary>
-#if SMARTASSEMBLY
-[DoNotCaptureVariables]
-#endif
         internal static void SetBackwardsCompatibleTrustServerCertificateValue(this DbConnectionStringBuilder builder)
         {
-            if (builder is SqlConnectionStringBuilder sqlBuilder)
+            // SqlConnectionStringBuilder overrides ContainsKey and [], so we always get back true and
+            // the default value respectively, so we can't tell whether keys were explicitly specified.
+            // By inspecting the connection string itself, we can tell whether keys are actually set.
+            var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
+            if (ShouldTrustServerCertificate(cleanBuilder))
             {
-                SetBackwardsCompatibleTrustServerCertificateValue(sqlBuilder);
-            }
-            else
-            {
-                var encrypt = builder.EncryptIsSet();
-                var isAzureAuth = builder.IsAzureAuth();
-                var server = builder.GetServer();
-
-                if (ShouldTrustServerCertificate(encrypt, isAzureAuth, server))
+                if (builder is SqlConnectionStringBuilder sqlBuilder)
                 {
-                    if (builder.ContainsKey("Trust Server Certificate") ||
-                        builder.ContainsKey("trustservercertificate"))
-                    {
-                        // The connection string specified it explicitly; don't override
-                        return;
-                    }
-
+                    sqlBuilder.TrustServerCertificate = true;
+                }
+                else
+                {
                     builder["Trust Server Certificate"] = "true";
                 }
             }
@@ -105,8 +69,13 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #endif
         internal static string SetBackwardsCompatibleTrustServerCertificateValue(this string connectionString)
         {
-            var builder = new DbConnectionStringBuilder {ConnectionString = connectionString};
-            builder.SetBackwardsCompatibleTrustServerCertificateValue();
+            var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
+
+            if (ShouldTrustServerCertificate(builder))
+            {
+                builder["Trust Server Certificate"] = "true";
+            }
+
             return builder.ConnectionString;
         }
 
@@ -162,6 +131,15 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
 #if SMARTASSEMBLY
 [DoNotCaptureVariables]
 #endif
+        private static bool IsTrustServerCertificateAlreadySpecified(this DbConnectionStringBuilder builder)
+        {
+            return builder.ContainsKey("Trust Server Certificate") ||
+                   builder.ContainsKey("trustservercertificate");
+        }
+
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
         private static string? GetServer(this DbConnectionStringBuilder builder)
         {
             if (builder.TryGetValue("Data Source", out var ds) && ds is string dss) return dss;
@@ -172,20 +150,27 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             return null;
         }
 
-        /// <summary>
-        /// <para>
-        /// System.Data.SqlClient didn't verify the certificate when connecting to a SQL Server using TLS,
-        /// unless the Encrypt connection property is set to true. In Microsoft.Data.SqlClient 2.0.0, this
-        /// behaviour has changed to always verify the server certificate. This could be disruptive to
-        /// customers, so we have decided to go for a middle ground: skip verification for on-premise SQL
-        /// Servers, that are being connected to over the LAN, when Encrypt is not set.
-        /// </para><para>
-        /// We should revisit this in the future; as encryption becomes more commonplace and more important,
-        /// even on LAN connections, verifying the server certificate should be enabled all the time. TBH,
-        /// this should already be the case in 2020!
-        /// </para>
-        /// </summary>
-        internal static bool ShouldTrustServerCertificate(bool encrypt, bool isAzureAuth, string? server)
+#if SMARTASSEMBLY
+[DoNotCaptureVariables]
+#endif
+        private static bool ShouldTrustServerCertificate(DbConnectionStringBuilder builder)
+        {
+            var encrypt = builder.EncryptIsSet();
+            var isAzureAuth = builder.IsAzureAuth();
+            var server = builder.GetServer();
+            var trustServerCertificateAlreadySpecified = builder.IsTrustServerCertificateAlreadySpecified();
+
+            return ShouldTrustServerCertificate(encrypt, isAzureAuth, trustServerCertificateAlreadySpecified, server);
+        }
+
+        // This is internal so that it can be seen by the tests, but as it's a microlibrary,
+        // internal is effectively public, and this shouldn't be on the public interface.
+        /***private //***/internal
+            static bool ShouldTrustServerCertificate(
+            bool encrypt,
+            bool isAzureAuth,
+            bool trustServerCertificateAlreadySpecified,
+            string? server)
         {
             if (encrypt)
             {
@@ -196,6 +181,12 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             if (isAzureAuth)
             {
                 // All connection to azure should have the certificate validated.
+                return false;
+            }
+
+            if (trustServerCertificateAlreadySpecified)
+            {
+                // If the Trust Server Certificate property is already explicitly specified, we shouldn't override it.
                 return false;
             }
 
