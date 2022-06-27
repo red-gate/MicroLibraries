@@ -196,7 +196,7 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             }
 
             // If the server is on the LAN, skip verification.
-            var host = server.Split('\\')[0].Trim();
+            var host = server.Split('\\', ',')[0].Trim();
             return IsHostOnLan(host);
         }
 
