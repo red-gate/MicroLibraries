@@ -1,5 +1,10 @@
 # ULibs.SqlClientCompatibility release notes
 
+## 1.0.3
+
+### Fixes
+- Fixed SetBackwardsCompatibleTrustServerCertificateValue when an explicit port is specified in the server name
+
 ## 1.0.2
 
 ### Fixes
