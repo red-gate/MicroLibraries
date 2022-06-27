@@ -24,6 +24,8 @@ namespace Ulibs.Tests.SqlClientCompatibility
         [TestCase(false, false, false, "(local)\\sql2014", ExpectedResult = true)]
         [TestCase(false, false, false, ".", ExpectedResult = true)]
         [TestCase(false, false, false, ".\\sql2014", ExpectedResult = true)]
+        [TestCase(false, false, false, "127.0.0.1", ExpectedResult = true)]
+        [TestCase(false, false, false, "127.0.0.1,12345", ExpectedResult = true)]
         [TestCase(false, false, false, "192.168.1.120", ExpectedResult = true)]
         [TestCase(false, false, false, "192.168.1.120\\sql2014", ExpectedResult = true)]
         // Don't override: Trust Server Certificate is already specified
