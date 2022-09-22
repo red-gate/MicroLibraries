@@ -1,0 +1,1 @@
+﻿Simple serialized entry store to store keyed memory streams
