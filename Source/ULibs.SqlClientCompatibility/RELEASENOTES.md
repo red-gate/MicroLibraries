@@ -1,5 +1,10 @@
 # ULibs.SqlClientCompatibility release notes
 
+## 2.0.0
+
+### Fixes
+- Upgraded Microsoft.Data.SqlClient to v5
+
 ## 1.0.3
 
 ### Fixes
