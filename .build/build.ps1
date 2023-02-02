@@ -59,7 +59,7 @@ task Compile {
     Push-Location -Path $SourceDir
     try {
         exec {
-            dotnet build 
+            dotnet build --configuration $Configuration
         }
     } finally {
         Pop-Location
@@ -74,7 +74,7 @@ task Test  Compile, {
     Push-Location -Path $SourceDir
     try {
         exec {
-            dotnet test
+            dotnet test --configuration $Configuration
         }
     } finally {
         Pop-Location
