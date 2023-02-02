@@ -2,7 +2,7 @@
 <!-- http://docs.nuget.org/docs/reference/nuspec-reference -->
 <package >
     <metadata>
-        <id>RedGate.ULibs.SqlClientCompatibility.Sources</id>
+        <id>RedGate.ULibs.SqlClientCompatibility.MDS</id>
         <version>$version$</version>
         <authors>red-gate</authors>
         <owners>red-gate</owners>
