@@ -1,0 +1,1 @@
+﻿See the `ULibs.SqlClientCompatibility/README.md` file.
