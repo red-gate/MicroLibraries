@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using Microsoft.Data.SqlClient;
 #if SMARTASSEMBLY
 using SmartAssembly.Attributes;
 #endif
@@ -40,14 +39,7 @@ namespace /***$rootnamespace$.***/ULibs.SqlClientCompatibility
             var cleanBuilder = new DbConnectionStringBuilder { ConnectionString = builder.ConnectionString };
             if (ShouldTrustServerCertificate(cleanBuilder))
             {
-                if (builder is SqlConnectionStringBuilder sqlBuilder)
-                {
-                    sqlBuilder.TrustServerCertificate = true;
-                }
-                else
-                {
-                    builder["Trust Server Certificate"] = "true";
-                }
+                builder["Trust Server Certificate"] = "true";
             }
         }
 
