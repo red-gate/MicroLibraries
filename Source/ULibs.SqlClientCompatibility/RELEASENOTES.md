@@ -1,5 +1,9 @@
 # ULibs.SqlClientCompatibility release notes
 
+## 3.1.0
+
+- Removed mention of Microsoft.Data.SqlClient from the included source code. The library should no longer force the consumer to reference a specific version of SqlClient
+
 ## 3.0.0
 - Removed Microsoft.Data.SqlClient dependency from the nuspec. The inlined code should build against the consumer's version of SqlClient
 
